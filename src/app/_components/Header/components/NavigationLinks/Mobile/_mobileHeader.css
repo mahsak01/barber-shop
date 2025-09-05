@@ -1,0 +1,17 @@
+.ant-drawer-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.active-background {
+  background-color: #0b1a2d;
+}
+.mobile-nav-container-light {
+  background: rgba(251, 251, 251, 0.7) !important;
+  backdrop-filter: blur(6px) !important;
+}
+.mobile-nav-container-dark {
+  background: rgba(2, 6, 16, 0.7) !important;
+  backdrop-filter: blur(12px) !important;
+}

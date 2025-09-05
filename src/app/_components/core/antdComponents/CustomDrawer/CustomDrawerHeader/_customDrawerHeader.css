@@ -1,0 +1,38 @@
+.header-drawer-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+.drawer-header-sticky-top {
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
+.right-side {
+  display: flex;
+  align-items: center;
+}
+.close-icon-container {
+  cursor: pointer;
+
+  padding: 4px 6px;
+  border-radius: 6px;
+}
+.close-icon-container:hover {
+  background-color: #ebe9e9;
+}
+.left-side {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.right-side {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.ant-form-item {
+  margin-bottom: 0;
+}

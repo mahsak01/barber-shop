@@ -1,26 +1,398 @@
-@import "tailwindcss";
+/* BASE */
+@import "tailwindcss/base";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* COMPONENT */
+@import "tailwindcss/components";
+/* @import "../tailwind/components.css"; */
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+/* UTILITIES */
+@import "tailwindcss/utilities";
 
-@media (prefers-color-scheme: dark) {
+@layer base {
+  html {
+    font-family: var(--vazirmatn);
+  }
+  *:lang(en) {
+    font-family: var(--vazirmatn) !important;
+  }
+  *:lang(fa) {
+    font-family: var(--vazirmatn) !important;
+  }
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --color-primary: theme("colors.primary");
+    --color-secondary: theme("colors.secondary");
+    --color-accent: theme("colors.accent");
+    --color-neutral: theme("colors.neutral");
+    --color-info: theme("colors.info");
+    --color-success: theme("colors.success");
+    --color-warning: theme("colors.warning");
+    --color-error: theme("colors.error");
+    --color-gradient-first: theme("colors.gradient-first");
+    --color-gradient-second: theme("colors.gradient-second");
+
+    /* Custom pallet */
+
+    /* PRIMARY */
+    --primary-1: #e8f0ff;
+    --primary-3: #b3caff;
+    --primary-4: #85a6ff;
+    --primary-6: #2f41ff;
+    --primary-7: #0e0cff;
+    --primary-50: #e3f2ff;
+    --primary-100: #bcdefe;
+    --primary-200: #92cbff;
+    --primary-300: #66b6fe;
+    --primary-400: #46a5fe;
+    --primary-500: #2b96fd;
+    --primary-600: #2a88ee;
+    --primary-700: #2876db;
+    --primary-800: #2564c8;
+    --primary-900: #2145a9;
+    --primary-950: #062886;
+
+    /* ERROR */
+    --error-50: #fef2f2;
+    --error-100: #fee2e2;
+    --error-200: #fecaca;
+    --error-300: #fca5a5;
+    --error-400: #f87171;
+    --error-500: #ef4444;
+    --error-500-10: #fee2e2;
+    --error-600: #dc2626;
+    --error-700: #b91c1c;
+    --error-800: #991b1b;
+    --error-900: #7f1d1d;
+    --error-950: #450a0a;
+
+    /* SUCCESS */
+    --success-50: #f0fdf4;
+    --success-100: #dcfce7;
+    --success-200: #bbf7d0;
+    --success-300: #86efac;
+    --success-400: #4ade80;
+    --success-500: #22c55e;
+    --success-600: #16a34a;
+    --success-700: #15803d;
+    --success-800: #166534;
+    --success-900: #14532d;
+    --success-950: #052e16;
+
+    --green-600: #5ab711;
+
+    /* WARNING */
+    --warning-50: #fcfae4;
+    --warning-100: #f8f2bc;
+    --warning-200: #f3e98f;
+    --warning-300: #eee062;
+    --warning-400: #ebdb3e;
+    --warning-500: #e8d508;
+    --warning-600: #e7c300;
+    --warning-700: #e5ac00;
+    --warning-800: #e49400;
+    --warning-900: #e06a00;
+    --warning-950: #b24400;
+
+    /* INFO */
+    --info-50: #e0f6fd;
+    --info-100: #b1e6fa;
+    --info-200: #7dd6f7;
+    --info-300: #46c6f4;
+    --info-400: #00b9f3;
+    --info-500: #00adf2;
+    --info-600: #009fe4;
+    --info-700: #008cd0;
+    --info-800: #007bbd;
+    --info-900: #005b9c;
+    --info-950: #003d69;
+
+    /* ORANGE */
+    --orange-50: #fff5ed;
+    --orange-100: #ffe9d5;
+    --orange-200: #fdcfab;
+    --orange-300: #fcad75;
+    --orange-400: #fa7f3d;
+    --orange-500: #f86624;
+    --orange-600: #e9420d;
+    --orange-700: #c12f0d;
+    --orange-800: #992713;
+    --orange-900: #7b2313;
+    --orange-950: #430e07;
+
+    /* BLUE */
+    --blue-50: #eef2ff;
+    --blue-100: #e1e6fe;
+    --blue-200: #c8d1fd;
+    --blue-300: #a7b3fa;
+    --blue-300-10: #a7b3fa1a;
+    --blue-400: #838bf6;
+    --blue-500: #6766ee;
+    --blue-600: #574ae2;
+    --blue-700: #493bc7;
+    --blue-800: #3c32a1;
+    --blue-900: #35307f;
+    --blue-950: #201c4a;
+
+    /* GEEK BLUE */
+    --geek-blue-6: #2f54eb;
+    --geek-blue-7: #1d39c4;
+
+    /*POLAR GREEN */
+    --polar-green-7: #389e0d;
+    --polar-green-8: #52c41a;
+    --polar-green-100: #15bb5d;
+    --polar-green-200: #009e41;
+    --polar-green-300: #009e411a;
+
+    /* PURPLE */
+    --golden-purple-7: #531dab;
+
+    /* NEUTRAL */
+    --neutral-9: #434343;
+    --neutral-10: #262626;
+    --neutral-11: #1f1f1f;
+    --neutral-13: #000000;
+    --neutral-50: #ffffff;
+    --neutral-100: #efefef;
+    --neutral-200: #dcdcdc;
+    --neutral-300: #bdbdbd;
+    --neutral-400: #989898;
+    --neutral-500: #7c7c7c;
+    --neutral-600: #656565;
+    --neutral-700: #525252;
+    --neutral-800: #464646;
+    --neutral-900: #3d3d3d;
+    --neutral-950: #292929;
+
+    /* TEXT */
+    --text-50: var(--neutral-950);
+    --text-100: var(--neutral-900);
+    --text-200: var(--neutral-800);
+    --text-300: var(--neutral-700);
+    --text-400: var(--neutral-600);
+    --text-500: var(--neutral-500);
+    --text-600: var(--neutral-400);
+    --text-700: var(--neutral-300);
+    --text-800: var(--neutral-200);
+    --text-900: var(--neutral-200);
+    --text-950: var(--neutral-200);
+    --text-disabled: var(--neutral-300);
+    --text-placeholder: var(--neutral-600);
+
+    /* Surface */
+    --surface-warning: #eee062dc;
+    --surface-orange: #fcad75be;
+    --surface-blue: #a7b3fa1a;
+    --surface-error: #fca5a5ab;
+    --surface-success: #86efada6;
+    --surface-info: #46c6f4bf;
+    --surface-primary: #e3f2ffa4;
+    --surface-disabled: #7c7c7ca7;
+
+    /* BG */
+    --bg-0: #fbfbfb;
+    --bg-1: #f4f4f4;
+    --bg-2: #efefef;
+    --bg-3: #e8e8e8;
+
+    /* STROKE */
+    --disabled: rgba(220, 220, 220, 0.663);
+  }
+  .dark {
+    /* PRIMARY */
+    --primary-1: #e8f0ff;
+    --primary-3: #b3caff;
+    --primary-4: #85a6ff;
+    --primary-6: #2f41ff;
+    --primary-7: #0e0cff;
+    --primary-50: #e3f2ff;
+    --primary-100: #bcdefe;
+    --primary-200: #92cbff;
+    --primary-300: #66b6fe;
+    --primary-400: #46a5fe;
+    --primary-500: #2b96fd;
+    --primary-600: #2a88ee;
+    --primary-700: #2876db;
+    --primary-800: #2564c8;
+    --primary-900: #2145a9;
+    --primary-950: #062886;
+
+    /* ERROR */
+
+    --error-50: #fef2f2;
+    --error-100: #fee2e2;
+    --error-200: #fecaca;
+    --error-300: #fca5a5;
+    --error-400: #f87171;
+    --error-500: #ef4444;
+    --error-500-10: #ef444434;
+    --error-600: #dc2626;
+    --error-700: #b91c1c;
+    --error-800: #991b1b;
+    --error-900: #7f1d1d;
+    --error-950: #450a0a;
+
+    /* SUCCESS */
+    --success-50: #f0fdf4;
+    --success-100: #dcfce7;
+    --success-200: #bbf7d0;
+    --success-300: #86efac;
+    --success-400: #4ade80;
+    --success-500: #22c55e;
+    --success-600: #16a34a;
+    --success-700: #15803d;
+    --success-800: #166534;
+    --success-900: #14532d;
+    --success-950: #052e16;
+
+    /* WARNING */
+    --warning-50: #fcfae4;
+    --warning-100: #f8f2bc;
+    --warning-200: #f3e98f;
+    --warning-300: #eee062;
+    --warning-400: #ebdb3e;
+    --warning-500: #e8d508;
+    --warning-600: #e7c300;
+    --warning-700: #e5ac00;
+    --warning-800: #e49400;
+    --warning-900: #e06a00;
+    --warning-950: #b24400;
+
+    /* INFO */
+    --info-50: #e0f6fd;
+    --info-100: #b1e6fa;
+    --info-200: #7dd6f7;
+    --info-300: #46c6f4;
+    --info-400: #00b9f3;
+    --info-500: #00adf2;
+    --info-600: #009fe4;
+    --info-700: #008cd0;
+    --info-800: #007bbd;
+    --info-900: #005b9c;
+    --info-950: #003d69;
+
+    /* ORANGE */
+    --orange-50: #fff5ed;
+    --orange-100: #ffe9d5;
+    --orange-200: #fdcfab;
+    --orange-300: #fcad75;
+    --orange-400: #fa7f3d;
+    --orange-500: #f86624;
+    --orange-600: #e9420d;
+    --orange-700: #c12f0d;
+    --orange-800: #992713;
+    --orange-900: #7b2313;
+    --orange-950: #430e07;
+
+    /* BLUE */
+    --blue-50: #eef2ff;
+    --blue-100: #e1e6fe;
+    --blue-200: #c8d1fd;
+    --blue-300: #a7b3fa;
+    --blue-300-10: #a7b3fa1a;
+    --blue-400: #838bf6;
+    --blue-500: #6766ee;
+    --blue-600: #574ae2;
+    --blue-700: #493bc7;
+    --blue-800: #3c32a1;
+    --blue-900: #35307f;
+    --blue-950: #201c4a;
+
+    /* GEEK BLUE */
+    --geek-blue-6: #2f54eb;
+    --geek-blue-7: #1d39c4;
+
+    /*POLAR GREEN */
+    --polar-green-7: #389e0d;
+    --polar-green-8: #52c41a;
+    --polar-green-100: #15bb5d;
+    --polar-green-200: #009e41;
+    --polar-green-300: #009e411a;
+
+    /* PURPLE */
+    --golden-purple-7: #531dab;
+
+    /* NEUTRAL */
+    --neutral-9: #434343;
+    --neutral-10: #262626;
+    --neutral-11: #1f1f1f;
+    --neutral-13: #000000;
+    --neutral-50: #ffffff;
+    --neutral-100: #efefef;
+    --neutral-200: #dcdcdc;
+    --neutral-300: #bdbdbd;
+    --neutral-400: #989898;
+    --neutral-500: #7c7c7c;
+    --neutral-600: #656565;
+    --neutral-700: #525252;
+    --neutral-800: #464646;
+    --neutral-900: #3d3d3d;
+    --neutral-950: #292929;
+
+    /* TEXT */
+    --text-50: var(--neutral-50);
+    --text-100: var(--neutral-100);
+    --text-200: var(--neutral-200);
+    --text-300: var(--neutral-300);
+    --text-400: var(--neutral-400);
+    --text-500: var(--neutral-500);
+    --text-600: var(--neutral-600);
+    --text-700: var(--neutral-700);
+    --text-800: var(--neutral-800);
+    --text-900: var(--neutral-900);
+    --text-950: var(--neutral-950);
+    --text-disabled: var(--neutral-900);
+    --text-placeholder: var(--neutral-400);
+
+    /* Surface */
+    --surface-warning: #eee06241;
+    --surface-orange: #fcad756f;
+    --surface-blue: #a7b3fa1a;
+    --surface-error: #fca5a578;
+    --surface-success: #86efad67;
+    --surface-info: #46c6f46b;
+    --surface-primary: #e3f2ff59;
+    --surface-disabled: #7c7c7c5f;
+
+    /* BG */
+    --bg-0: #020610;
+    --bg-1: #0f121c;
+    --bg-2: #1b1f28;
+    --bg-3: #282b34;
+
+    /* STROKE */
+    --disabled: rgba(124, 124, 124, 0.614);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+.gradient {
+  @apply bg-gradient-to-r from-gradient-first to-gradient-second bg-clip-text text-transparent;
+}
+
+.animated-icon {
+  & > * {
+    @apply transition-all;
+  }
+
+  &:hover {
+    @apply text-white;
+
+    & > * {
+      @apply -translate-x-2;
+    }
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.8s ease forwards;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }

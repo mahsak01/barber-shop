@@ -1,0 +1,4 @@
+.ant-btn:hover .ant-btn-icon svg {
+  fill: var(--primary-700);
+  transition: all ease-in-out 0.4s;
+}

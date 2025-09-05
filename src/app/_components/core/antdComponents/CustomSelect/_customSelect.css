@@ -1,0 +1,3 @@
+.ant-form-item-has-error .ant-select-selector {
+  @apply !bg-error-500-10;
+}

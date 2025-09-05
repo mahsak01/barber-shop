@@ -1,0 +1,32 @@
+import { NetworkError } from "@/types/network-error.interface";
+
+export type CitiesListRequestModel = {
+  counts?: number;
+};
+
+export type CitiesListResult = {
+  cities: {
+    ID: string;
+    province: string;
+    city: string;
+  }[];
+};
+
+export type CitiesListOptions = {
+  onSuccess?: (response: CitiesListResult) => void;
+  onError?: (error: NetworkError) => void;
+};
+
+export type ServiceListRequestModel = {
+  gender: string;
+};
+
+export type ServiceListResult = {
+  ID: string;
+  service: string;
+}[];
+
+export type ServiceListOptions = {
+  onSuccess?: (response: ServiceListResult) => void;
+  onError?: (error: NetworkError) => void;
+};

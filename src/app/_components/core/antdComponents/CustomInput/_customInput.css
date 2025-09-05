@@ -1,0 +1,48 @@
+.custom-input-root .ant-form-item-no-colon {
+  color: var(--text-400) !important;
+}
+.custom-input-root .ant-form-item-has-error .ant-form-item-control-input-content input {
+  @apply !bg-error-500-10;
+}
+.custom-input-root
+  .ant-form-item-has-error
+  .ant-form-item-control-input-content
+  input::-webkit-input-placeholder {
+  /* WebKit, Blink, Edge */
+  @apply text-text-placeholder;
+}
+.custom-input-root.ant-form-item-has-error
+  .ant-form-item-control-input-content
+  input:-moz-placeholder {
+  /* Mozilla Firefox 4 to 18 */
+  @apply text-text-placeholder opacity-100;
+}
+.custom-input-root
+  .ant-form-item-has-error
+  .ant-form-item-control-input-content
+  input::-moz-placeholder {
+  /* Mozilla Firefox 19+ */
+  @apply text-text-placeholder opacity-100;
+}
+.custom-input-root
+  .ant-form-item-has-error
+  .ant-form-item-control-input-content
+  input:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  @apply text-text-placeholder;
+}
+.custom-input-root
+  .ant-form-item-has-error
+  .ant-form-item-control-input-content
+  input::-ms-input-placeholder {
+  /* Microsoft Edge */
+  @apply text-text-placeholder;
+}
+
+.custom-input-root
+  .ant-form-item-has-error
+  .ant-form-item-control-input-content
+  input::placeholder {
+  /* Most modern browsers support this now. */
+  @apply text-text-placeholder;
+}

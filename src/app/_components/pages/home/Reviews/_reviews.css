@@ -1,0 +1,11 @@
+.review-page-container {
+  /* Make Swiper slides equal height */
+  .swiper-wrapper {
+    display: flex; /* Ensures equal height alignment */
+  }
+
+  .swiper-slide {
+    display: flex;
+    height: auto !important; /* Allow content to determine height */
+  }
+}
