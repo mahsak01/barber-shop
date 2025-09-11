@@ -3,248 +3,40 @@ import { Badge, Button } from "antd";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { RiScissorsFill } from "react-icons/ri";
 import { BiHeart, BiMapPin, BiShare } from "react-icons/bi";
+import { PiElevatorLight, PiTelevisionSimpleLight } from "react-icons/pi";
+import { FaChildren } from "react-icons/fa6";
 import { IoIosStar } from "react-icons/io";
+import { TfiWheelchair } from "react-icons/tfi";
+import { FiBookOpen } from "react-icons/fi";
+import { MdOutlineToys } from "react-icons/md";
+import { LuGlassWater } from "react-icons/lu";
+import { IoMusicalNotes } from "react-icons/io5";
+import { LuCircleParking } from "react-icons/lu";
+import { RiDrinks2Fill } from "react-icons/ri";
+import { FaTransgender } from "react-icons/fa";
+import { PiDogLight } from "react-icons/pi";
+import { FiCircle } from "react-icons/fi";
 import { useSalonDetail } from "./_api/salonDetail";
 import {
   SalonDetailDataType,
   SalonDetailResult,
+  SalonServiceType,
+  TransferWorkingTimeType,
 } from "./_api/salonDetail.types";
 import CustomButton from "@/app/_components/core/antdComponents/CustomButton/CustomButton";
-
-const x = {
-  ID: "1001",
-  province: "سمنان",
-  city: "شاهرود",
-  working_time: {
-    saturday: {
-      shift1_start: "09:00:00",
-      shift1_end: "13:00:00",
-      shift2_start: "16:00:00",
-      shift2_end: "21:00:00",
-      is_shift1_closed: false,
-      is_shift2_closed: false,
-      is_day_closed: false,
-    },
-    sunday: {
-      shift1_start: "09:00:00",
-      shift1_end: "13:00:00",
-      shift2_start: "16:00:00",
-      shift2_end: "21:00:00",
-      is_shift1_closed: false,
-      is_shift2_closed: false,
-      is_day_closed: false,
-    },
-    monday: {
-      shift1_start: "09:00:00",
-      shift1_end: "13:00:00",
-      shift2_start: "16:00:00",
-      shift2_end: "21:00:00",
-      is_shift1_closed: false,
-      is_shift2_closed: false,
-      is_day_closed: false,
-    },
-    tuesday: {
-      shift1_start: "09:00:00",
-      shift1_end: "13:00:00",
-      shift2_start: "16:00:00",
-      shift2_end: "21:00:00",
-      is_shift1_closed: false,
-      is_shift2_closed: false,
-      is_day_closed: false,
-    },
-    wednesday: {
-      shift1_start: "09:00:00",
-      shift1_end: "13:00:00",
-      shift2_start: "16:00:00",
-      shift2_end: "21:00:00",
-      is_shift1_closed: false,
-      is_shift2_closed: false,
-      is_day_closed: false,
-    },
-    thursday: {
-      shift1_start: "09:00:00",
-      shift1_end: "13:00:00",
-      shift2_start: "16:00:00",
-      shift2_end: "21:00:00",
-      is_shift1_closed: false,
-      is_shift2_closed: false,
-      is_day_closed: false,
-    },
-    friday: {
-      shift1_start: null,
-      shift1_end: null,
-      shift2_start: null,
-      shift2_end: null,
-      is_shift1_closed: true,
-      is_shift2_closed: true,
-      is_day_closed: true,
-    },
-  },
-  calendar_holidays: "0",
-  location: "3645' 4594'",
-  type: "1",
-  area: "18",
-  line: "3",
-  moving: "0",
-  floor: "0",
-  elevator: "0",
-  child_state: "1",
-  wheel: "0",
-  cooling: "1",
-  heating: "1",
-  magazine: "1",
-  toy: "1",
-  h_water: "1",
-  tv: "1",
-  music: "0",
-  park_space: "1",
-  drink: "0",
-  bisexual: "0",
-  animal: "0",
-  dirt: "0",
-  dull: "1",
-  tolerance: "10",
-  social_network: "",
-  Reserved_appointments: [
-    {
-      ID: "1",
-      service: "اصلاح ساده سر",
-      worker_id: "5",
-      date: "1404.06.13",
-      start_time: "19:15:00",
-      end_time: "19:35:00",
-      service_duration: "20",
-      tolerance: "8",
-    },
-  ],
-};
-
-const categories = [
-  "Featured",
-  "Hair Care",
-  "Beard Care",
-  "Color",
-  "Face Care",
-];
-
-const openingTimes = [
-  { day: "Monday", open: "09:00", close: "20:00", openStatus: true },
-  { day: "Tuesday", open: "09:00", close: "20:00", openStatus: true },
-  { day: "Wednesday", open: "09:00", close: "20:00", openStatus: true },
-  { day: "Thursday", open: "09:00", close: "20:00", openStatus: true },
-  { day: "Friday", open: "09:00", close: "20:00", openStatus: true },
-  { day: "Saturday", open: "09:00", close: "18:00", openStatus: true },
-  { day: "Sunday", openStatus: false },
-];
-
-const additionalInfo = [
-  { icon: "check", label: "Instant Confirmation" },
-  { icon: "creditCard", label: "Pay by app" },
-  { icon: "pet", label: "Pet-friendly" },
-  { icon: "kid", label: "Kid-friendly" },
-  { icon: "wheelchair", label: "Wheelchair accessible" },
-  { icon: "bus", label: "Near public transport" },
-  { icon: null, label: "LGBTQ+" },
-  { icon: null, label: "Woman-owned" },
-  { icon: null, label: "Hispanic-owned" },
-];
-
-const icons = {
-  check: (
-    <svg
-      className="w-5 h-5 text-black"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={2}
-      viewBox="0 0 24 24"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-    </svg>
-  ),
-  creditCard: (
-    <svg
-      className="w-5 h-5 text-black"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={2}
-      viewBox="0 0 24 24"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <rect width="20" height="14" x="2" y="5" rx="2" ry="2" />
-      <path strokeLinecap="round" strokeLinejoin="round" d="M2 10h20" />
-    </svg>
-  ),
-  pet: (
-    <svg
-      className="w-5 h-5 text-black"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={2}
-      viewBox="0 0 24 24"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      {/* Paw print icon */}
-      <circle cx="9" cy="9" r="2" />
-      <circle cx="15" cy="9" r="2" />
-      <circle cx="12" cy="12" r="2" />
-      <circle cx="9" cy="15" r="2" />
-      <circle cx="15" cy="15" r="2" />
-    </svg>
-  ),
-  kid: (
-    <svg
-      className="w-5 h-5 text-black"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={2}
-      viewBox="0 0 24 24"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      {/* Smiley face */}
-      <circle cx="12" cy="12" r="10" />
-      <path d="M8 14s1.5 2 4 0" />
-      <circle cx="9" cy="10" r="1" />
-      <circle cx="15" cy="10" r="1" />
-    </svg>
-  ),
-  wheelchair: (
-    <svg
-      className="w-5 h-5 text-black"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={2}
-      viewBox="0 0 24 24"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      {/* Wheelchair icon simplified */}
-      <circle cx="15" cy="15" r="4" />
-      <path d="M11 12l-2-3" />
-      <path d="M4 12h7l5 8" />
-      <circle cx="7" cy="17" r="3" />
-    </svg>
-  ),
-  bus: (
-    <svg
-      className="w-5 h-5 text-black"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={2}
-      viewBox="0 0 24 24"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      {/* Bus icon */}
-      <rect x="3" y="7" width="18" height="10" rx="2" ry="2" />
-      <circle cx="7.5" cy="17.5" r="1.5" />
-      <circle cx="16.5" cy="17.5" r="1.5" />
-    </svg>
-  ),
-};
+import { englishDayToPersianDayConvertor } from "@/utils/global/common";
+import { PiFanLight } from "react-icons/pi";
+import { GiHeatHaze } from "react-icons/gi";
 
 const SalonDetail = () => {
   const [data, setData] = useState<SalonDetailDataType | null>(null);
-  const [activeCategory, setActiveCategory] = useState("Featured");
+
+  const [services, setServices] = useState<SalonServiceType[]>([]);
+  const [activeService, setActiveService] = useState("");
+
+  const [workingTime, setWorkingTime] = useState<TransferWorkingTimeType[]>([]);
 
   const searchParams = useSearchParams();
   const queryParams = Object.fromEntries(searchParams.entries());
@@ -261,6 +53,20 @@ const SalonDetail = () => {
 
   function salonDetailOnSuccess(res: SalonDetailResult) {
     setData(res?.salon[0]);
+    setServices(res?.salon[0]?.services);
+    setActiveService(res?.salon[0]?.services?.[0]?.service_name);
+
+    const rawWorkingTime = res?.salon?.[0]?.working_time;
+    const tempWorkingTimeData: TransferWorkingTimeType[] = [];
+
+    for (const key in rawWorkingTime) {
+      tempWorkingTimeData.push({
+        day: englishDayToPersianDayConvertor[key],
+        ...rawWorkingTime[key],
+      });
+    }
+
+    setWorkingTime(tempWorkingTimeData);
   }
 
   const reviewCount = 3061;
@@ -358,40 +164,48 @@ const SalonDetail = () => {
 
           {/* Categories */}
           <div className="flex flex-wrap gap-4 mb-6">
-            {categories.map((category) => (
+            {services.map((service) => (
               <CustomButton
-                key={category}
-                onClick={() => setActiveCategory(category)}
+                key={service?.service_name}
+                onClick={() => {
+                  if (service?.service_name) {
+                    setActiveService(service.service_name);
+                  }
+                }}
                 className={`px-4 py-1.5 rounded-full text-sm font-medium transition ${
-                  activeCategory === category
+                  activeService === service?.service_name
                     ? "bg-neutral-9 text-white"
                     : "bg-transparent text-gray-700 hover:text-black"
                 }`}
               >
-                {category}
+                {service?.service_name}
               </CustomButton>
             ))}
           </div>
 
           {/* Services list */}
           <div className="space-y-4">
-            {data?.services.map((service) => (
-              <div
-                key={service.ID}
-                className="flex justify-between items-center border rounded-xl border-neutral-200 p-4 hover:shadow-sm transition"
-              >
-                <div>
-                  <h3 className="font-medium">{service.service}</h3>
-                  <p className="text-sm text-gray-500">
-                    {service.duration} دقیقه
-                  </p>
-                  <p className="text-sm font-medium mt-1">{service.price}</p>
+            {services
+              ?.find((service) => service.service_name === activeService)
+              ?.sub_services?.map((service) => (
+                <div
+                  key={service.service_id}
+                  className="flex justify-between items-center border rounded-xl border-neutral-200 p-4 hover:shadow-sm transition"
+                >
+                  <div>
+                    <h3 className="font-medium">{service.sub_service_name}</h3>
+                    <p className="text-sm text-gray-500">
+                      {service.duration} دقیقه
+                    </p>
+                    <p className="text-sm font-medium mt-1">
+                      {service.price} هزار تومان
+                    </p>
+                  </div>
+                  <CustomButton className="px-4 py-1.5 border rounded-full border-neutral-200  text-sm font-medium hover:bg-gray-100 transition">
+                    رزرو
+                  </CustomButton>
                 </div>
-                <CustomButton className="px-4 py-1.5 border rounded-full border-neutral-200  text-sm font-medium hover:bg-gray-100 transition">
-                  رزرو
-                </CustomButton>
-              </div>
-            ))}
+              ))}
           </div>
         </section>
 
@@ -399,7 +213,7 @@ const SalonDetail = () => {
         <section className="max-w-4xl mx-auto px-6 py-10">
           <h2 className="text-xl font-semibold mb-8">تیم</h2>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-6 justify-items-center">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-10 justify-items-center">
             {data?.team.map((member) => (
               <div
                 key={member.ID}
@@ -411,7 +225,7 @@ const SalonDetail = () => {
                     alt={member.worker_name}
                     width={117}
                     height={117}
-                    className="w-28 h-28 rounded-full object-cover"
+                    className="w-28 h-28 min-w-28 rounded-full object-cover"
                   />
                   <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 bg-white border rounded-full border-neutral-200  px-2 py-0.5 text-xs font-medium flex items-center shadow">
                     ⭐ {5}
@@ -478,38 +292,53 @@ const SalonDetail = () => {
         </section>
 
         {/* Opening time and additional info */}
-        <div className="max-w-4xl mx-auto p-6 flex flex-col md:flex-row md:gap-20 gap-10">
+        <div className="max-w-4xl mx-auto p-6 flex flex-col  gap-10">
           {/* Opening times */}
           <div>
-            <h3 className="font-semibold mb-4">ساعات کاری</h3>
+            <h3 className="font-bold text-lg mb-4">ساعات کاری</h3>
             <ul>
-              {openingTimes.map(({ day, open, close, openStatus }) => (
+              {workingTime.map((wt) => (
                 <li
-                  key={day}
-                  className="flex items-center justify-between mb-1 text-sm"
+                  key={wt?.day}
+                  className="border-b border-neutral-200 flex items-center gap-5 md:gap-20 mb-1 text-sm"
                 >
-                  <div className="flex items-center space-x-2">
+                  <div className=" min-w-24 flex items-center gap-2">
                     <span
                       className={`w-3 h-3 rounded-full ${
-                        openStatus ? "bg-green-500" : "bg-gray-400"
+                        !wt?.is_day_closed
+                          ? "bg-polar-green-8"
+                          : "bg-neutral-400"
                       }`}
                       aria-hidden="true"
                     ></span>
                     <span
                       className={`${
-                        openStatus ? "text-black" : "text-gray-400"
+                        !wt?.is_day_closed ? "text-black" : "text-gray-400"
                       } font-medium`}
                     >
-                      {day}
+                      {wt?.day}
                     </span>
                   </div>
-                  <span
-                    className={`${
-                      openStatus ? "text-black" : "text-gray-400"
-                    } font-medium`}
-                  >
-                    {openStatus ? `${open} – ${close}` : "Closed"}
-                  </span>
+                  <div className="flex flex-col gap-2">
+                    <div
+                      className={`${
+                        !wt?.is_day_closed ? "text-black" : "text-gray-400"
+                      } font-medium`}
+                    >
+                      {!wt?.is_day_closed
+                        ? `${wt?.shift1_start} – ${wt?.shift1_end}`
+                        : "بسته"}
+                    </div>
+                    <div
+                      className={`${
+                        !wt?.is_day_closed ? "text-black" : "text-gray-400"
+                      } font-medium`}
+                    >
+                      {!wt?.is_day_closed
+                        ? `${wt?.shift2_start} – ${wt?.shift2_end}`
+                        : "بسته"}
+                    </div>
+                  </div>
                 </li>
               ))}
             </ul>
@@ -517,14 +346,93 @@ const SalonDetail = () => {
 
           {/* Additional information */}
           <div className="max-w-xs">
-            <h3 className="font-semibold mb-4">Additional information</h3>
-            <ul className="space-y-2 text-sm">
-              {additionalInfo.map(({ icon, label }) => (
-                <li key={label} className="flex items-center space-x-2">
-                  {icon && icons[icon]}
-                  <span>{label}</span>
-                </li>
-              ))}
+            <h3 className="font-bold text-lg mb-4">سایر اطلاعات</h3>
+            <ul className="space-y-2 text-sm ">
+              <li className=" flex items-center gap-5 text-base">
+                <RiScissorsFill size={14} />
+                <span className="min-w-36 ">سبار</span>
+                <span>{data?.moving === "1" ? "بله" : "خیر"}</span>
+              </li>
+              <li className=" flex items-center gap-5 text-base">
+                <PiElevatorLight size={14} />
+                <span className="min-w-36 ">آسانسور</span>
+                <span>{data?.elevator === "1" ? "دارد" : "ندارد"}</span>
+              </li>
+              <li className=" flex items-center gap-5 text-base">
+                <FaChildren size={14} />
+                <span className="min-w-36">پذیرش کودکان</span>
+                <span>{data?.child_state === "1" ? "بله" : "خیر"}</span>
+              </li>
+              <li className=" flex items-center gap-5 text-base">
+                <PiTelevisionSimpleLight size={14} />
+                <span className="min-w-36">تلویریون</span>
+                <span>{data?.tv === "1" ? "دارد" : "ندارد"}</span>
+              </li>
+              <li className=" flex items-center gap-5 text-base">
+                <TfiWheelchair size={14} />
+                <span className="min-w-36">مسیر ویلچر</span>
+                <span>{data?.wheel === "1" ? "دارد" : "ندارد"}</span>
+              </li>
+              <li className=" flex items-center gap-5 text-base">
+                <PiFanLight size={14} />
+                <span className="min-w-36">سیستم سرمایش</span>
+                <span>{data?.cooling === "1" ? "دارد" : "ندارد"}</span>
+              </li>
+              <li className=" flex items-center gap-5 text-base">
+                <GiHeatHaze size={14} />
+                <span className="min-w-36">سیستم گرمایش</span>
+                <span>{data?.heating === "1" ? "دارد" : "ندارد"}</span>
+              </li>
+              <li className=" flex items-center gap-5 text-base">
+                <FiBookOpen size={14} />
+                <span className="min-w-36">مجله</span>
+                <span>{data?.magazine === "1" ? "دارد" : "ندارد"}</span>
+              </li>
+              <li className=" flex items-center gap-5 text-base">
+                <MdOutlineToys size={14} />
+                <span className="min-w-36">اسباب بازی کودکان</span>
+                <span>{data?.toy === "1" ? "دارد" : "ندارد"}</span>
+              </li>
+              <li className=" flex items-center gap-5 text-base">
+                <LuGlassWater size={14} />
+                <span className="min-w-36">آب گرم</span>
+                <span>{data?.h_water === "1" ? "دارد" : "ندارد"}</span>
+              </li>
+              <li className=" flex items-center gap-5 text-base">
+                <IoMusicalNotes size={14} />
+                <span className="min-w-36">موریک</span>
+                <span>{data?.music === "1" ? "دارد" : "ندارد"}</span>
+              </li>
+              <li className=" flex items-center gap-5 text-base">
+                <LuCircleParking size={14} />
+                <span className="min-w-36">جای پارک خودرو</span>
+                <span>{data?.park_space === "1" ? "دارد" : "ندارد"}</span>
+              </li>
+              <li className=" flex items-center gap-5 text-base">
+                <RiDrinks2Fill size={14} />
+                <span className="min-w-36">پذیرایی از مشتری</span>
+                <span>{data?.drink === "1" ? "دارد" : "ندارد"}</span>
+              </li>
+              <li className=" flex items-center gap-5 text-base">
+                <FaTransgender size={14} />
+                <span className="min-w-36">پذیرش ترنس</span>
+                <span>{data?.bisexual === "1" ? "بله" : "خیر"}</span>
+              </li>
+              <li className=" flex items-center gap-5 text-base">
+                <PiDogLight size={14} />
+                <span className="min-w-36">امکات بردن حیوانات خانگی</span>
+                <span>{data?.animal === "1" ? "دارد" : "ندارد"}</span>
+              </li>
+              <li className=" flex items-center gap-5 text-base">
+                <FiCircle size={14} />
+                <span className="min-w-36">پذیرش موی چرب یا شپشی</span>
+                <span>{data?.dirt === "1" ? "بله" : "خیر"}</span>
+              </li>
+              <li className=" flex items-center gap-5 text-base">
+                <FiCircle size={14} />
+                <span className="min-w-36">پذیرش افراد کند ذهن</span>
+                <span>{data?.dull === "1" ? "بله" : "خیر"}</span>
+              </li>
             </ul>
           </div>
         </div>

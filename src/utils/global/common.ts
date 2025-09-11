@@ -46,3 +46,13 @@ export const defaultSelectTransformOptions = (
     item,
   }));
 };
+
+export const englishDayToPersianDayConvertor: Record<string, string> = {
+  saturday: "شنبه",
+  sunday: "یکشنبه",
+  monday: "دوشنبه",
+  tuesday: "سه شنبه",
+  wednesday: "چهارشنبه",
+  thursday: "پنجشنبه",
+  friday: "جمعه",
+};

@@ -14,6 +14,19 @@ type workingTimeType = {
   is_day_closed: boolean;
 };
 
+export type TransferWorkingTimeType = workingTimeType & {day:string}
+
+export type SalonServiceType = {
+  service_name: string;
+  sub_services: {
+    service_id: number;
+    sub_service_name: string;
+    price: number;
+    duration: string;
+    worker_id: string;
+  }[];
+};
+
 export type SalonDetailDataType = {
   ID: string;
   title: string;
@@ -24,15 +37,7 @@ export type SalonDetailDataType = {
   city: string;
   address: string;
   about: string;
-  working_time: {
-    saturday: workingTimeType;
-    sunday: workingTimeType;
-    monday: workingTimeType;
-    tuesday: workingTimeType;
-    wednesday: workingTimeType;
-    thursday: workingTimeType;
-    friday: workingTimeType;
-  };
+  working_time:Record<string,workingTimeType> ;
   calendar_holidays: string;
   CommentCount: string;
   location: string;
@@ -64,15 +69,9 @@ export type SalonDetailDataType = {
     worker_id: string;
     worker_name: string;
     bio: string;
+    picture: string;
   }[];
-  services: {
-    ID: string;
-    service: string;
-    duration: string;
-    price: string;
-    worker_name: string;
-    worker_id: string;
-  }[];
+  services: SalonServiceType[];
   Reserved_appointments: {
     ID: string;
     service: string;
