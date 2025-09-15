@@ -4,14 +4,40 @@ import {
   CitiesListOptions,
   CitiesListRequestModel,
   CitiesListResult,
+  ProvinceListOptions,
+  ProvinceListRequestModel,
+  ProvinceListResult,
   ServiceListOptions,
   ServiceListRequestModel,
   ServiceListResult,
 } from "./hero.types";
 
+// get province list
+const getProvinceList = (
+  model: ProvinceListRequestModel = {}
+): Promise<ProvinceListResult> =>
+  postRequest<ProvinceListRequestModel, ProvinceListResult>(
+    "/api/available_province.php",
+    model
+  );
+
+export const useProvinceList = ({ onSuccess, onError }: ProvinceListOptions) => {
+  const { mutate, isPending, data } = useMutation({
+    mutationFn: (model?: ProvinceListRequestModel) => getProvinceList(model),
+    onSuccess: onSuccess,
+    onError: onError,
+  });
+
+  return {
+    mutate,
+    isPending,
+    data,
+  };
+};
+
 // get cities list
 const getCitiesList = (
-  model: CitiesListRequestModel = {}
+  model: CitiesListRequestModel 
 ): Promise<CitiesListResult> =>
   postRequest<CitiesListRequestModel, CitiesListResult>(
     "/api/available_city.php",
@@ -20,7 +46,7 @@ const getCitiesList = (
 
 export const useCitiesList = ({ onSuccess, onError }: CitiesListOptions) => {
   const { mutate, isPending, data } = useMutation({
-    mutationFn: (model?: CitiesListRequestModel) => getCitiesList(model),
+    mutationFn: (model: CitiesListRequestModel) => getCitiesList(model),
     onSuccess: onSuccess,
     onError: onError,
   });

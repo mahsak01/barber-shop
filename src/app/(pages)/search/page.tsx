@@ -23,10 +23,10 @@ const SearchResult = () => {
 
   useEffect(() => {
     getSearchList({
-      gender: "0",
+      gender: "1",
       date: "1404.06.07",
       province: "سمنان",
-      city: "دامغان",
+      city: "شاهرود",
       service: "اصلاح ساده سر",
     });
     // getSearchList({

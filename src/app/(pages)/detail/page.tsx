@@ -69,9 +69,7 @@ const SalonDetail = () => {
     setWorkingTime(tempWorkingTimeData);
   }
 
-  const reviewCount = 3061;
-  const status = "Closed";
-  const openingTime = "09:00";
+
 
   return (
     <div className="p-8 flex flex-col gap-8">
@@ -90,14 +88,14 @@ const SalonDetail = () => {
                 </div>
                 <span className="text-lg">{data?.score}</span>
                 <span className="text-blue-600 hover:underline cursor-pointer">
-                  ({reviewCount.toLocaleString()})
+                ({data?.CommentCount.toLocaleString()})
                 </span>
               </div>
               <div className="flex items-center gap-2 text-gray-600 mb-1">
                 <span className="bg-red-100 text-red-600 hover:bg-red-100">
-                  {status}
+                  {data?.is_open_now ? "باز" : "بسته"}
                 </span>
-                <span>- باز از {openingTime}</span>
+                <span>- باز از {data?.open_at}</span>
               </div>
               <div className="flex items-center text-gray-600">
                 <span>{data?.address}</span>
@@ -172,11 +170,10 @@ const SalonDetail = () => {
                     setActiveService(service.service_name);
                   }
                 }}
-                className={`px-4 py-1.5 rounded-full text-sm font-medium transition ${
-                  activeService === service?.service_name
+                className={`px-4 py-1.5 rounded-full text-sm font-medium transition ${activeService === service?.service_name
                     ? "bg-neutral-9 text-white"
                     : "bg-transparent text-gray-700 hover:text-black"
-                }`}
+                  }`}
               >
                 {service?.service_name}
               </CustomButton>
@@ -275,7 +272,7 @@ const SalonDetail = () => {
                   </div>
                 </div>
                 <div className="flex space-x-0.5 mb-1">
-                  {[...Array(Math.ceil(+item?.avrage_score))].map((_, i) => (
+                  {[...Array(Math.ceil(+item?.average_score || 3))].map((_, i) => (
                     <IoIosStar key={i} className="w-4 h-4" />
                   ))}
                 </div>
@@ -304,35 +301,31 @@ const SalonDetail = () => {
                 >
                   <div className=" min-w-24 flex items-center gap-2">
                     <span
-                      className={`w-3 h-3 rounded-full ${
-                        !wt?.is_day_closed
+                      className={`w-3 h-3 rounded-full ${!wt?.is_day_closed
                           ? "bg-polar-green-8"
                           : "bg-neutral-400"
-                      }`}
+                        }`}
                       aria-hidden="true"
                     ></span>
                     <span
-                      className={`${
-                        !wt?.is_day_closed ? "text-black" : "text-gray-400"
-                      } font-medium`}
+                      className={`${!wt?.is_day_closed ? "text-black" : "text-gray-400"
+                        } font-medium`}
                     >
                       {wt?.day}
                     </span>
                   </div>
                   <div className="flex flex-col gap-2">
                     <div
-                      className={`${
-                        !wt?.is_day_closed ? "text-black" : "text-gray-400"
-                      } font-medium`}
+                      className={`${!wt?.is_day_closed ? "text-black" : "text-gray-400"
+                        } font-medium`}
                     >
                       {!wt?.is_day_closed
                         ? `${wt?.shift1_start} – ${wt?.shift1_end}`
                         : "بسته"}
                     </div>
                     <div
-                      className={`${
-                        !wt?.is_day_closed ? "text-black" : "text-gray-400"
-                      } font-medium`}
+                      className={`${!wt?.is_day_closed ? "text-black" : "text-gray-400"
+                        } font-medium`}
                     >
                       {!wt?.is_day_closed
                         ? `${wt?.shift2_start} – ${wt?.shift2_end}`

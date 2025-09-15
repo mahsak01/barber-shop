@@ -8,14 +8,18 @@ import { MdMiscellaneousServices } from "react-icons/md";
 import CustomSelect from "@/app/_components/core/antdComponents/CustomSelect/CustomSelect";
 import CustomDatePicker from "@/app/_components/core/antdComponents/CustomDatePicker/CustomDatePicker";
 import CustomButton from "@/app/_components/core/antdComponents/CustomButton/CustomButton";
-import { useCitiesList, useServiceList } from "./_api/hero";
-import { CitiesListResult, ServiceListResult } from "./_api/hero.types";
+import { useCitiesList, useProvinceList, useServiceList } from "./_api/hero";
+import { CitiesListResult, ProvinceListResult, ServiceListResult } from "./_api/hero.types";
 import { GENDER_TYPE_LIST } from "../../_shared/utils";
 import { useRouter } from "next/navigation";
 import { HeroFormDataType } from "./landingHero.types";
- 
+
 
 const LandingHero = () => {
+  const [provinceList, setProvinceList] = useState<{ id: number; title: string }[]>(
+    []
+  );
+
   const [citiesList, setCitiesList] = useState<{ id: number; title: string }[]>(
     []
   );
@@ -24,15 +28,24 @@ const LandingHero = () => {
     { id: number; title: string }[]
   >([]);
 
-  const router = useRouter() 
+  const router = useRouter()
 
   const [form] = Form.useForm<HeroFormDataType>();
+
+  const { mutate: getProvinceList, isPending: isProvinceListLoading } =
+    useProvinceList({ onSuccess: provinceListOnSuccess });
 
   const { mutate: getCitiesList, isPending: isCitiesListLoading } =
     useCitiesList({ onSuccess: citiesListOnSuccess });
 
   const { mutate: getServiceList, isPending: isServiceListLoading } =
     useServiceList({ onSuccess: serviceListOnSuccess });
+
+  function provinceListOnSuccess(res: ProvinceListResult) {
+    setProvinceList(
+      res.provinces?.map((item) => ({ id: +item.province_id, title: item.province }))
+    );
+  }
 
   function citiesListOnSuccess(res: CitiesListResult) {
     setCitiesList(
@@ -47,8 +60,15 @@ const LandingHero = () => {
   }
 
   useEffect(() => {
-    getCitiesList({});
+    getProvinceList({})
+
   }, []);
+
+  const changeProvinceHandler = (provinceId: number) => {
+    getCitiesList({
+      province_id: provinceId
+    });
+  }
 
   const genderChangeHandler = (genderId: string) => {
     getServiceList({ gender: genderId });
@@ -58,9 +78,9 @@ const LandingHero = () => {
     });
   };
 
-  const searchBtnHandler = ()=>{
-      const params = new URLSearchParams();
-      const {city,serviceType,gender} = form.getFieldsValue()
+  const searchBtnHandler = () => {
+    const params = new URLSearchParams();
+    const { city, serviceType, gender } = form.getFieldsValue()
 
     if (city) {
       params.append("city", city.title);
@@ -86,6 +106,17 @@ const LandingHero = () => {
           gutter={[16, 16]}
           className="w-full px-4 max-w-[500px] md:max-w-[600px]"
         >
+          <Col xs={24} md={12}>
+            <CustomSelect
+              options={provinceList}
+              name="province"
+              placeholder="انتخاب استان"
+              prefix={<BiSolidCity />}
+              form={form}
+              onChange={(id) => changeProvinceHandler(id as number)}
+              loading={isProvinceListLoading}
+            />
+          </Col>
           <Col xs={24} md={12}>
             <CustomSelect
               options={citiesList}
