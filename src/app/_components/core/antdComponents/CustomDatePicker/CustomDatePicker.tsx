@@ -1,10 +1,13 @@
-"use client"
 import { forwardRef, useEffect, useState } from "react";
-import { DatePicker, FormInstance, GetProps, GetRef } from "antd";
+import { DatePicker, Form, FormInstance, GetProps, GetRef } from "antd";
 import dayjs, { Dayjs } from "dayjs";
+import moment from "jalali-moment";
 import { Rule } from "antd/es/form";
-import FormItem from "antd/es/form/FormItem";
+import momentOriginal from "moment";
 import "./_customDatePicker.css";
+import { JalaliLocaleListenerFix } from "@/utils/DatePickerFix/utils/jalali";
+ 
+
 
 type CustomDatePickerProps = Omit<GetProps<typeof DatePicker>, "form"> & {
   label?: string;
@@ -55,8 +58,12 @@ const CustomDatePicker = forwardRef<GetRef<typeof DatePicker>, CustomDatePickerP
       size,
       popupStyle = {},
       picker = "date",
+      defaultValue,
       form,
+      customContainerClass,
       isLoading = false,
+      isGregorian = false,
+      onChange,
       validateTrigger = undefined,
       variant = "outlined",
       hasNullInitiator = false,
@@ -96,78 +103,86 @@ const CustomDatePicker = forwardRef<GetRef<typeof DatePicker>, CustomDatePickerP
     }, [dayJsString]);
 
     return (
-      <FormItem
-        label={label}
-        htmlFor={name}
-        className={`${hasVerticalLabel && "vertical-label"} ${className ? className : ""}`}
-        name={name}
-        rules={rules}
-        hasFeedback={hasFeedback}
-        shouldUpdate={isLoading}
-        validateTrigger={validateTrigger}
+      <div
+        className={`date-pick-container ${
+          customContainerClass ? customContainerClass : " "
+        }`}
+        // loading={isLoading}
       >
-        {/* <DatePicker /> */}
-        <DatePicker
-          id={name}
-          aria-label={label === null ? "لیبل تاریخ" : label?.toString()}
+        <Form.Item
+          label={label}
+          htmlFor={name}
+          className={`${hasVerticalLabel && "vertical-label"} ${className ? className : ""}`}
           name={name}
-          placeholder={placeholder}
-          disabled={disabled}
-          allowClear={allowClear}
-          autoFocus={autoFocus}
-          variant={variant}
-          disabledDate={disabledDate}
-          style={style}
-          onPanelChange={onPanelChange}
-          onOpenChange={onOpenChange}
-          size={size}
-          key={
-            // Todo[Atefeh]: remove it in the future
+          rules={rules}
+          hasFeedback={hasFeedback}
+          shouldUpdate={isLoading}
+          validateTrigger={validateTrigger}
+        >
+          {/* <DatePicker /> */}
+          <JalaliLocaleListenerFix />
+          <DatePicker
+            id={name}
+            aria-label={label === null ? "لیبل تاریخ" : label?.toString()}
+            name={name}
+            placeholder={placeholder}
+            disabled={disabled}
+            allowClear={allowClear}
+            autoFocus={autoFocus}
+            variant={variant}
+            disabledDate={disabledDate}
+            style={style}
+            onPanelChange={onPanelChange}
+            onOpenChange={onOpenChange}
+            size={size}
+            key={
+              // Todo[Atefeh]: remove it in the future
 
-            //v1
-            // newDefaultValue instanceof Array
-            //   ? newDefaultValue?.map((item) => item?.valueOf()?.toString())?.toString()
-            //   : newDefaultValue?.valueOf()?.toString()
-            //v2
-            // newDefaultValue instanceof Array
-            //   ? newDefaultValue?.[newDefaultValue?.length - 1]?.valueOf()
-            //   : newDefaultValue?.valueOf()
-            //v3
-            newDefaultValue instanceof Array
-              ? JSON.stringify(newDefaultValue)
-              : newDefaultValue?.valueOf()
-          }
-          popupStyle={popupStyle}
-          picker={picker}
-          defaultValue={newDefaultValue}
-          // value={newDefaultValue}
-          // onChange={(_: any, dateString: any) => {
-          //   if (dateString === "") {
-          //     return form?.setFieldsValue({
-          //       [name]: undefined,
-          //     });
-          //   }
+              //v1
+              // newDefaultValue instanceof Array
+              //   ? newDefaultValue?.map((item) => item?.valueOf()?.toString())?.toString()
+              //   : newDefaultValue?.valueOf()?.toString()
+              //v2
+              // newDefaultValue instanceof Array
+              //   ? newDefaultValue?.[newDefaultValue?.length - 1]?.valueOf()
+              //   : newDefaultValue?.valueOf()
+              //v3
+              newDefaultValue instanceof Array
+                ? JSON.stringify(newDefaultValue)
+                : newDefaultValue?.valueOf()
+            }
+            popupStyle={popupStyle}
+            picker={picker}
+            defaultValue={newDefaultValue}
+            // value={newDefaultValue}
+            onChange={(_: any, dateString: any) => {
+              if (dateString === "") {
+                return form?.setFieldsValue({
+                  [name]: undefined,
+                });
+              }
 
-          //   if (typeof onChange === "function") {
-          //     return onChange?.(_, dateString);
-          //   }
+              if (typeof onChange === "function") {
+                return onChange?.(_, dateString);
+              }
 
-          //   if (isGregorian) {
-          //     return form?.setFieldsValue({
-          //       [name]: momentOriginal(_).format("YYYY-MM-DDT00:00:00.000+03:30"),
-          //     });
-          //   }
+              if (isGregorian) {
+                return form?.setFieldsValue({
+                  [name]: momentOriginal(_).format("YYYY-MM-DDT00:00:00.000+03:30"),
+                });
+              }
 
-          //   form?.setFieldsValue({
-          //     [name]: moment
-          //       .from(dateString, "fa", "YYYY-MM-DD")
-          //       .format("YYYY-MM-DDTHH:mm:ss.SSSZ"),
-          //   });
-          // }}
-          ref={ref}
-          {...props}
-        />
-      </FormItem>
+              form?.setFieldsValue({
+                [name]: moment
+                  .from(dateString, "fa", "YYYY-MM-DD")
+                  .format("YYYY-MM-DDTHH:mm:ss.SSSZ"),
+              });
+            }}
+            ref={ref}
+            {...props}
+          />
+        </Form.Item>
+      </div>
     );
   }
 );

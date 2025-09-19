@@ -29,7 +29,7 @@ const SelectTime = () => {
   useEffect(() => {
     getTimeSlotBySalonServiceWorkerDateId({
       salon_id: "1000",
-      date: "1404.06.16",
+      date: "1404.06.29",
       service_id: "3",
       worker_id: "5",
     });
@@ -74,7 +74,7 @@ const SelectTime = () => {
 
       {/* Time Slots */}
       <div className="space-y-3">
-        {data?.slots.map((slot, i) => (
+        {data?.slots?.map((slot, i) => (
           <div
             key={i}
             className="w-full cursor-pointer flex justify-between items-center px-4 py-3 border border-neutral-200 rounded-xl text-left"

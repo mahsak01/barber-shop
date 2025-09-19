@@ -1,7 +1,20 @@
 "use client";
-import { ConfigProvider, theme, ThemeConfig } from "antd";
+import { ConfigProvider, theme, ThemeConfig,ConfigProviderProps } from "antd";
 import { useTheme } from "next-themes";
 import { ReactNode, useEffect, useState } from "react";
+import { ConfigContext } from "antd/es/config-provider";
+import useConfig from "antd/es/config-provider/hooks/useConfig";
+import { SizeType } from "antd/es/config-provider/SizeContext";
+import { GlobalConfigProps } from "antd/es/notification/interface";
+import fa_IR from "antd/es/locale/fa_IR";
+
+type Config = ConfigProviderProps & {
+  ConfigContext?: typeof ConfigContext;
+  SizeContext?: React.Context<SizeType>;
+  config?: (props: GlobalConfigProps) => void;
+  useConfig?: typeof useConfig;
+};
+
 
 const antdThemeConfig: (currentTheme?: string) => ThemeConfig = (
   currentTheme?: string
@@ -33,7 +46,30 @@ export default function AntdConfigProviderWrapper({ children }: { children: Reac
     return null; // Don't render anything until the theme is resolved
   }
 
+    const config: Config = {
+      locale: fa_IR,
+      direction: "rtl",
+      renderEmpty: () => <p>This is empty</p> ,
+      theme: {
+        // algorithm: theme.defaultAlgorithm,
+        token: {
+          borderRadiusSM: 4,
+          borderRadius: 8,
+          borderRadiusLG: 12,
+          borderRadiusXS: 2,
+          colorPrimary: "#1890ff",
+          colorInfo: "#1890ff",
+          colorWarning: "#faad14",
+          wireframe: false,
+        },
+        hashed: true, // Enable CSS-in-JS hash to avoid conflicts
+        cssVar: true, // Enable CSS variables mode
+        // components: {},
+      },
+      virtual: true,
+    };
+
   return (
-    <ConfigProvider theme={antdThemeConfig(resolvedTheme)}>{children}</ConfigProvider>
+    <ConfigProvider theme={antdThemeConfig(resolvedTheme)} {...config}>{children}</ConfigProvider>
   );
 }

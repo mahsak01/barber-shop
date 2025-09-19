@@ -15,10 +15,10 @@ export type TimeSlotBySalonServiceWorkerDateIdResult = {
   weekday: string;
   price: number;
   slots: {
-      start_time: string;
-      end_time: string;
-      is_available: boolean;
-    }[];
+    start_time: string;
+    end_time: string;
+    is_available: boolean;
+  }[];
 };
 
 export type TimeSlotBySalonServiceWorkerDateIdOptions = {
