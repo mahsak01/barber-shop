@@ -10,6 +10,11 @@ export type SalonDataType = {
   city: string;
   score: string;
   pic: string;
+  ID: string,
+  province: string,
+  address: string,
+  about: string,
+  CommentCount: string
 };
 
 export type SalonListResult = {

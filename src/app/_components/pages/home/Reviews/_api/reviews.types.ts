@@ -4,6 +4,10 @@ export type CommentsDataType = {
   name: string;
   comment: string;
   date: string;
+  UserID: string;
+  title: string;
+  score: string;
+  avatar: string
 };
 
 export type CommentsListResult = {

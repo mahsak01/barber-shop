@@ -28,6 +28,8 @@ const LandingHero = () => {
     { id: number; title: string }[]
   >([]);
 
+  const [selectedDate, setSelectedDate] = useState("")
+
   const router = useRouter()
 
   const [form] = Form.useForm<HeroFormDataType>();
@@ -49,7 +51,7 @@ const LandingHero = () => {
 
   function citiesListOnSuccess(res: CitiesListResult) {
     setCitiesList(
-      res.cities?.map((item) => ({ id: +item.ID, title: item.city }))
+      res.cities?.map((item) => ({ id: +item.city_id, title: item.city }))
     );
   }
 
@@ -80,17 +82,27 @@ const LandingHero = () => {
 
   const searchBtnHandler = () => {
     const params = new URLSearchParams();
-    const { city, serviceType, gender } = form.getFieldsValue()
+    const { city, serviceType, gender, province } = form.getFieldsValue()
+
+    if (province) {
+      params.append("province", province.title);
+    }
 
     if (city) {
       params.append("city", city.title);
     }
+
     if (gender) {
       params.append("genderId", gender.code.toString());
       params.append("gender", gender.title);
     }
+
     if (serviceType) {
       params.append("service", serviceType.title);
+    }
+
+    if (selectedDate) {
+      params.append("date", selectedDate);
     }
 
     router.push(`/search?${params.toString()}`);
@@ -148,7 +160,7 @@ const LandingHero = () => {
             />
           </Col>
           <Col xs={24} md={12}>
-            <CustomDatePicker name="date" placeholder="انتخاب تاریخ" />
+            <CustomDatePicker name="date" placeholder="انتخاب تاریخ" form={form} onChange={(_, localeDate) => setSelectedDate(localeDate as string)} />
           </Col>
           <Col span={24}>
             <CustomButton type="primary" icon={<CiSearch />} className="w-full" onClick={searchBtnHandler}>

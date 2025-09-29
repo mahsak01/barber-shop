@@ -14,7 +14,7 @@ type workingTimeType = {
   is_day_closed: boolean;
 };
 
-export type TransferWorkingTimeType = workingTimeType & { day: string }
+export type TransferWorkingTimeType = workingTimeType & { day: string };
 
 export type SalonServiceType = {
   service_name: string;
@@ -30,9 +30,9 @@ export type SalonServiceType = {
 export type SalonDetailDataType = {
   ID: string;
   title: string;
-  "is_open_now": boolean,
-  "open_at": string,
-  "closed_at": string,
+  is_open_now: boolean;
+  open_at: string;
+  closed_at: string;
   score: string;
   pic: string;
   images: [string, string];
@@ -73,6 +73,7 @@ export type SalonDetailDataType = {
     worker_name: string;
     bio: string;
     picture: string;
+    score: string;
   }[];
   services: SalonServiceType[];
   Reserved_appointments: {
@@ -92,8 +93,7 @@ export type SalonDetailDataType = {
     detail: string;
     date: string;
     average_score: string;
-    worker_name: string;
-    worker_id: string;
+    avatar: string;
   }[];
 };
 

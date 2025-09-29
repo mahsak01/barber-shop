@@ -4,6 +4,8 @@ export type SearchSalonListRequestModel = {
   gender: string;
   city: string;
   service: string;
+  province: string;
+  date: string;
 };
 
 export type SearchSalonDataType = {
@@ -20,6 +22,7 @@ export type SearchSalonDataType = {
 
 export type SearchSalonListResult = {
   salon: SearchSalonDataType[];
+  total_count:number
 };
 
 export type SearchSalonListOptions = {

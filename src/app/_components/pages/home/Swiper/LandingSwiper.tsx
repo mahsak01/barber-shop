@@ -48,8 +48,8 @@ const LandingSwiper = ({ list }: { list: SalonDataType[] }) => {
           <ServiceCard
             title={item?.title}
             score={item?.score}
-            // Todo:uncomment when api got ready
-            // votes={3444}
+            votes={item?.CommentCount}
+            id={item?.ID}
             address={item?.city}
             img={item?.pic}
             // tags="ماساژ"

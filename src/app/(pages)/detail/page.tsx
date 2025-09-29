@@ -1,7 +1,7 @@
 "use client";
 import { Badge, Button } from "antd";
 import Image from "next/image";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { RiScissorsFill } from "react-icons/ri";
 import { BiHeart, BiMapPin, BiShare } from "react-icons/bi";
@@ -41,14 +41,18 @@ const SalonDetail = () => {
   const searchParams = useSearchParams();
   const queryParams = Object.fromEntries(searchParams.entries());
 
+  const router = useRouter();
+
   const { mutate: getDetail, isPending: isGetDetailLoading } = useSalonDetail({
     onSuccess: salonDetailOnSuccess,
   });
 
   useEffect(() => {
-    getDetail({
-      id: "1001",
-    });
+    if (queryParams?.id) {
+      getDetail({
+        id: queryParams?.id,
+      });
+    }
   }, []);
 
   function salonDetailOnSuccess(res: SalonDetailResult) {
@@ -69,7 +73,11 @@ const SalonDetail = () => {
     setWorkingTime(tempWorkingTimeData);
   }
 
-
+  const goToSelectWorkerPage = (serviceId: number) => {
+    router.push(
+      `/select-worker?salonId=${queryParams?.id}&serviceId=${serviceId}`
+    );
+  };
 
   return (
     <div className="p-8 flex flex-col gap-8">
@@ -88,7 +96,7 @@ const SalonDetail = () => {
                 </div>
                 <span className="text-lg">{data?.score}</span>
                 <span className="text-blue-600 hover:underline cursor-pointer">
-                ({data?.CommentCount.toLocaleString()})
+                  ({data?.CommentCount.toLocaleString()})
                 </span>
               </div>
               <div className="flex items-center gap-2 text-gray-600 mb-1">
@@ -170,10 +178,11 @@ const SalonDetail = () => {
                     setActiveService(service.service_name);
                   }
                 }}
-                className={`px-4 py-1.5 rounded-full text-sm font-medium transition ${activeService === service?.service_name
+                className={`px-4 py-1.5 rounded-full text-sm font-medium transition ${
+                  activeService === service?.service_name
                     ? "bg-neutral-9 text-white"
                     : "bg-transparent text-gray-700 hover:text-black"
-                  }`}
+                }`}
               >
                 {service?.service_name}
               </CustomButton>
@@ -198,7 +207,10 @@ const SalonDetail = () => {
                       {service.price} هزار تومان
                     </p>
                   </div>
-                  <CustomButton className="px-4 py-1.5 border rounded-full border-neutral-200  text-sm font-medium hover:bg-gray-100 transition">
+                  <CustomButton
+                    onClick={() => goToSelectWorkerPage(service?.service_id)}
+                    className="px-4 py-1.5 border rounded-full border-neutral-200  text-sm font-medium hover:bg-gray-100 transition"
+                  >
                     رزرو
                   </CustomButton>
                 </div>
@@ -218,65 +230,19 @@ const SalonDetail = () => {
               >
                 <div className="relative">
                   <Image
-                    src={`https://be-nobat.ir/images/${data?.pic}`}
+                    src={`https://be-nobat.ir/images/users/${member?.ID}.jpg`}
                     alt={member.worker_name}
                     width={117}
                     height={117}
                     className="w-28 h-28 min-w-28 rounded-full object-cover"
                   />
+
                   <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 bg-white border rounded-full border-neutral-200  px-2 py-0.5 text-xs font-medium flex items-center shadow">
-                    ⭐ {5}
+                    ⭐ {member?.score}
                   </div>
                 </div>
                 <p className="mt-6 font-medium">{member.worker_name}</p>
                 <p className="text-sm text-gray-500">{member.bio}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Comments */}
-        <section className="max-w-4xl mx-auto px-6 py-10">
-          {/* Header */}
-          <div className="mb-6">
-            <h2 className="font-bold text-lg mb-1">نظرات</h2>
-            <div className="flex items-center space-x-1 mb-1">
-              {[...Array(5)].map((_, i) => (
-                <IoIosStar key={i} className="w-4 h-4" />
-              ))}
-            </div>
-            <div className="flex items-center gap-1 space-x-1 text-sm font-semibold">
-              <span>5.0</span>
-              <span className="text-blue-700 hover:underline">
-                (data?.CommentCount)
-              </span>
-            </div>
-          </div>
-
-          {/* Reviews Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-            {data?.comments?.map((item) => (
-              <div key={item?.ID}>
-                <div className="flex items-center gap-2 space-x-3 mb-1">
-                  <Image
-                    src={`https://be-nobat.ir/images/${data?.pic}`}
-                    alt={item?.full_name}
-                    width={80}
-                    height={80}
-                    className="w-[80px] h-[80px] rounded-full object-cover"
-                  />
-
-                  <div>
-                    <p className="font-semibold text-sm">{item?.full_name}</p>
-                    <p className="text-xs text-gray-400">{item?.date}</p>
-                  </div>
-                </div>
-                <div className="flex space-x-0.5 mb-1">
-                  {[...Array(Math.ceil(+item?.average_score || 3))].map((_, i) => (
-                    <IoIosStar key={i} className="w-4 h-4" />
-                  ))}
-                </div>
-                <p className="font-bold text-sm">{item?.detail}</p>
               </div>
             ))}
           </div>
@@ -288,55 +254,8 @@ const SalonDetail = () => {
           <p className="text-base">{data?.about}</p>
         </section>
 
-        {/* Opening time and additional info */}
+        {/* Additional info and Opening time */}
         <div className="max-w-4xl mx-auto p-6 flex flex-col  gap-10">
-          {/* Opening times */}
-          <div>
-            <h3 className="font-bold text-lg mb-4">ساعات کاری</h3>
-            <ul>
-              {workingTime.map((wt) => (
-                <li
-                  key={wt?.day}
-                  className="border-b border-neutral-200 flex items-center gap-5 md:gap-20 mb-1 text-sm"
-                >
-                  <div className=" min-w-24 flex items-center gap-2">
-                    <span
-                      className={`w-3 h-3 rounded-full ${!wt?.is_day_closed
-                          ? "bg-polar-green-8"
-                          : "bg-neutral-400"
-                        }`}
-                      aria-hidden="true"
-                    ></span>
-                    <span
-                      className={`${!wt?.is_day_closed ? "text-black" : "text-gray-400"
-                        } font-medium`}
-                    >
-                      {wt?.day}
-                    </span>
-                  </div>
-                  <div className="flex flex-col gap-2">
-                    <div
-                      className={`${!wt?.is_day_closed ? "text-black" : "text-gray-400"
-                        } font-medium`}
-                    >
-                      {!wt?.is_day_closed
-                        ? `${wt?.shift1_start} – ${wt?.shift1_end}`
-                        : "بسته"}
-                    </div>
-                    <div
-                      className={`${!wt?.is_day_closed ? "text-black" : "text-gray-400"
-                        } font-medium`}
-                    >
-                      {!wt?.is_day_closed
-                        ? `${wt?.shift2_start} – ${wt?.shift2_end}`
-                        : "بسته"}
-                    </div>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
-
           {/* Additional information */}
           <div className="max-w-xs">
             <h3 className="font-bold text-lg mb-4">سایر اطلاعات</h3>
@@ -428,7 +347,117 @@ const SalonDetail = () => {
               </li>
             </ul>
           </div>
+
+          {/* Opening times */}
+          <div>
+            <h3 className="font-bold text-lg mb-4">ساعات کاری</h3>
+            <ul className="grid grid-cols-1 md:grid-cols-3 gap-2">
+              {workingTime.map((wt) => (
+                <li
+                  key={wt?.day}
+                  className="border rounded-md p-2 shadow-sm border-neutral-200 flex items-center gap-5  text-sm"
+                >
+                  <div className=" min-w-24 flex items-center gap-2">
+                    <span
+                      className={`w-3 h-3 rounded-full ${
+                        !wt?.is_day_closed
+                          ? "bg-polar-green-8"
+                          : "bg-neutral-400"
+                      }`}
+                      aria-hidden="true"
+                    ></span>
+                    <span
+                      className={`${
+                        !wt?.is_day_closed ? "text-black" : "text-gray-400"
+                      } font-medium`}
+                    >
+                      {wt?.day}
+                    </span>
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <div
+                      className={`${
+                        !wt?.is_day_closed ? "text-black" : "text-gray-400"
+                      } font-medium`}
+                    >
+                      {!wt?.is_day_closed
+                        ? `${wt?.shift1_end.slice(0, 5)} – ${wt?.shift1_start.slice(0, 5)}`
+                        : "بسته"}
+                    </div>
+                    <div
+                      className={`${
+                        !wt?.is_day_closed ? "text-black" : "text-gray-400"
+                      } font-medium`}
+                    >
+                      {!wt?.is_day_closed
+                        ? `${wt?.shift2_end.slice(0, 5)} – ${wt?.shift2_start.slice(0, 5)}`
+                        : "بسته"}
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
+
+        {/* Comments */}
+        <section className="max-w-4xl mx-auto px-6 py-10">
+          {/* Header */}
+          <div className="mb-6">
+            <h2 className="font-bold text-lg mb-1">نظرات</h2>
+            <div className="flex items-center space-x-1 mb-1">
+              {[...Array(5)].map((_, i) => (
+                <IoIosStar key={i} className="w-4 h-4" />
+              ))}
+            </div>
+            <div className="flex items-center gap-1 space-x-1 text-sm font-semibold">
+              <span>5.0</span>
+              <span className="text-blue-700 hover:underline">
+                ({data?.CommentCount})
+              </span>
+            </div>
+          </div>
+
+          {/* Reviews Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+            {data?.comments?.map((item) => (
+              <div key={item?.ID}>
+                <div className="flex items-center gap-2 space-x-3 mb-1">
+                  {item?.avatar === "0" ? (
+                    <Image // Placeholder image
+                      src={`/images/placeholder/man.png`}
+                      alt="placeholder"
+                      width={80}
+                      height={80}
+                      className="w-[80px] h-[80px] min-w-[80px] rounded-full object-cover mr-3"
+                    />
+                  ) : (
+                    <Image
+                      src={`https://be-nobat.ir/images/users/${item?.ID}.jpg`}
+                      alt="placeholder"
+                      width={80}
+                      height={80}
+                      className="w-[80px] h-[80px] min-w-[80px] rounded-full object-cover mr-3"
+                    />
+                  )}
+
+                  <div>
+                    <p className="font-semibold text-sm">{item?.full_name}</p>
+                    <p className="text-xs text-gray-400">{item?.date}</p>
+                  </div>
+                </div>
+                <div className="flex space-x-0.5 mb-1">
+                  {[...Array(Math.ceil(+item?.average_score || 3))].map(
+                    (_, i) => (
+                      <IoIosStar key={i} className="w-4 h-4" />
+                    )
+                  )}
+                </div>
+                <p className="font-bold text-sm">{item?.detail}</p>
+              </div>
+            ))}
+          </div>
+        </section>
       </div>
     </div>
   );

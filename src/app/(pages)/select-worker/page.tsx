@@ -6,11 +6,17 @@ import {
   WorkerListBySalonServiceIdResult,
 } from "./_api/selectWorker.types";
 import Image from "next/image";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const SelectWorker = () => {
   const [workerList, setWorkerList] = useState<WorkerDateBySalonServiceId[]>(
     []
   );
+
+  const searchParams = useSearchParams();
+  const queryParams = Object.fromEntries(searchParams.entries());
+
+  const router = useRouter();
 
   const {
     mutate: getWorkerListBySalonServiceId,
@@ -21,8 +27,8 @@ const SelectWorker = () => {
 
   useEffect(() => {
     getWorkerListBySalonServiceId({
-      salon_id: "1001",
-      service_id: "1",
+      salon_id: queryParams?.salonId,
+      service_id: queryParams?.serviceId,
     });
   }, []);
 
@@ -32,6 +38,12 @@ const SelectWorker = () => {
     setWorkerList(res?.service_workers);
   }
 
+  const goToSelectTimePage = (workerId: string) => {
+    router.push(
+      `/select-time?salonId=${queryParams?.salonId}&serviceId=${queryParams?.serviceId}&workerId=${workerId}`
+    );
+  };
+
   return (
     <div className="p-6 max-w-6xl mx-auto">
       <h2 className="text-2xl font-bold mb-6">انتخاب متخصص</h2>
@@ -40,14 +52,15 @@ const SelectWorker = () => {
           <div
             key={worker?.worker_id}
             className="border border-neutral-200 rounded-2xl cursor-pointer hover:bg-neutral-100 transition p-6 flex flex-col items-center text-center"
+            onClick={() => goToSelectTimePage(worker?.worker_id)}
           >
-            {worker?.image ? (
+            {worker?.worker_id ? (
               <Image
-                src={`https://be-nobat.ir/images/${worker?.image}`}
+                src={`https://be-nobat.ir/images/users/${worker?.worker_id}.jpg`}
                 alt={worker?.worker_name}
                 width={117}
                 height={117}
-                className="w-28 h-28 min-w-28 rounded-full object-cover"
+                className="w-28 h-28 min-w-28 rounded-full border border-neutral-200 object-cover"
               />
             ) : (
               <Image
@@ -60,10 +73,11 @@ const SelectWorker = () => {
             )}
 
             <h3 className="text-lg font-semibold">{worker.worker_name}</h3>
-            {worker?.role && (
+            {/* Todo:uncomment when api got ready */}
+            {/* {worker?.role && (
               <p className="text-sm text-gray-500">{worker?.role}</p>
             )}
-            <p className="text-sm text-gray-500">{"worker?.role"}</p>
+            <p className="text-sm text-gray-500">{"worker?.role"}</p> */}
 
             {worker.worker_score && (
               <div className="flex items-center justify-center mt-2">

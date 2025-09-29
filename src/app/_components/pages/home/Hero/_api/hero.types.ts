@@ -21,8 +21,7 @@ export type CitiesListRequestModel = {
 
 export type CitiesListResult = {
   cities: {
-    ID: string;
-    province: string;
+    city_id: string;
     city: string;
   }[];
 };

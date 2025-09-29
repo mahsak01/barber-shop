@@ -1,6 +1,7 @@
 import Image from "next/image";
 import React from "react";
 import { ServiceCardProps } from "./serviceCard.types";
+import { useRouter } from "next/navigation";
 
 const ServiceCard = ({
   title,
@@ -9,9 +10,13 @@ const ServiceCard = ({
   votes,
   address,
   tags,
+  id
 }: ServiceCardProps) => {
+  const router = useRouter()
+
+
   return (
-    <div className="max-w-[250px] rounded-lg overflow-hidden shadow-md bg-white ">
+    <div className="max-w-[250px] cursor-pointer rounded-lg overflow-hidden shadow-md bg-white" onClick={()=> router.push(`/detail?id=${id}`)}>
       <Image
         src={`https://be-nobat.ir/images/${img}`}
         alt={title}

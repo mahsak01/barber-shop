@@ -11,6 +11,7 @@ type SelectType = {
 };
 
 export type HeroFormDataType = {
+  province: SelectType;
   city: SelectType;
   gender:SelectType;
   serviceType: SelectType;
