@@ -18,6 +18,7 @@ import CustomInput from "@/app/_components/core/antdComponents/CustomInput/Custo
 import { FiFilter } from "react-icons/fi";
 import { useRouter } from "next/navigation";
 import CustomDatePicker from "@/app/_components/core/antdComponents/CustomDatePicker/CustomDatePicker";
+import "./_workersList.css";
 
 // import "./workersSchedule.css";
 
@@ -357,7 +358,14 @@ const Workers = () => {
     },
   ];
 
-  return <Tabs defaultActiveKey="1" items={items} onChange={() => {}} />;
+  return (
+    <Tabs
+      defaultActiveKey="1"
+      items={items}
+      onChange={() => {}}
+      className="px-8"
+    />
+  );
 };
 
 export default Workers;
