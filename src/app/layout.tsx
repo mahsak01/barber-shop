@@ -1,6 +1,6 @@
-import { Metadata } from "next"; 
+import { Metadata } from "next";
 import { RootLayoutProps } from "@/types/common";
-import BaseLayout from "./_components/BaseLayout/BaseLayout";
+import BaseLayout from "@/app/_components/BaseLayout/BaseLayout";
 import "./globals.css";
 
 export const metadata: Metadata = {

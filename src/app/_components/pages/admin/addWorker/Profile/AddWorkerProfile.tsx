@@ -1,31 +1,22 @@
 "use client";
-import { Form, Upload, Button, Tabs, Divider } from "antd";
+import { Form, Upload, Button, Divider } from "antd";
 import { UploadOutlined, UserOutlined } from "@ant-design/icons";
 import CustomInput from "@/app/_components/core/antdComponents/CustomInput/CustomInput";
 import CustomDatePicker from "@/app/_components/core/antdComponents/CustomDatePicker/CustomDatePicker";
 import CustomSelect from "@/app/_components/core/antdComponents/CustomSelect/CustomSelect";
 
-const AddWorker = () => {
+function getRandomRgbColor() {
+  const r = Math.floor(Math.random() * 256);
+  const g = Math.floor(Math.random() * 256);
+  const b = Math.floor(Math.random() * 256);
+  return `rgb(${r}, ${g}, ${b})`;
+}
+
+const AddWorkerProfile = () => {
   const [form] = Form.useForm();
 
-  function getRandomRgbColor() {
-    const r = Math.floor(Math.random() * 256);
-    const g = Math.floor(Math.random() * 256);
-    const b = Math.floor(Math.random() * 256);
-    return `rgb(${r}, ${g}, ${b})`;
-  }
-
   return (
-    <div className="p-8 bg-neutral-50 w-full">
-      {/* Tabs */}
-      <Tabs defaultActiveKey="1" className="mb-6">
-        <Tabs.TabPane tab="پروفای" key="1" />
-        <Tabs.TabPane tab="آدرس" key="2" />
-        <Tabs.TabPane tab="تماس اضطراری" key="3" />
-        <Tabs.TabPane tab="سرویس ها" key="4" />
-        <Tabs.TabPane tab="اطلاعات مکانی" key="5" />
-      </Tabs>
-
+    <div className="p-8 w-full">
       {/* Title */}
       <div className="mb-6">
         <h2 className="text-xl font-semibold">پروفایل</h2>
@@ -90,4 +81,4 @@ const AddWorker = () => {
   );
 };
 
-export default AddWorker;
+export default AddWorkerProfile;

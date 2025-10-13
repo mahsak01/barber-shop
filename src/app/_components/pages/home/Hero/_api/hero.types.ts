@@ -1,18 +1,18 @@
 import { NetworkError } from "@/types/network-error.interface";
 
-export type ProvinceListRequestModel = {}
+export type ProvinceListRequestModel = {};
 
 export type ProvinceListResult = {
-  "provinces": {
-    "province_id": string,
-    "province": string
-  }[]
-}
+  provinces: {
+    province_id: string;
+    province: string;
+  }[];
+};
 
 export type ProvinceListOptions = {
   onSuccess?: (response: ProvinceListResult) => void;
   onError?: (error: NetworkError) => void;
-}
+};
 
 export type CitiesListRequestModel = {
   counts?: number;

@@ -9,16 +9,19 @@ import CustomSelect from "@/app/_components/core/antdComponents/CustomSelect/Cus
 import CustomDatePicker from "@/app/_components/core/antdComponents/CustomDatePicker/CustomDatePicker";
 import CustomButton from "@/app/_components/core/antdComponents/CustomButton/CustomButton";
 import { useCitiesList, useProvinceList, useServiceList } from "./_api/hero";
-import { CitiesListResult, ProvinceListResult, ServiceListResult } from "./_api/hero.types";
+import {
+  CitiesListResult,
+  ProvinceListResult,
+  ServiceListResult,
+} from "./_api/hero.types";
 import { GENDER_TYPE_LIST } from "../../_shared/utils";
 import { useRouter } from "next/navigation";
 import { HeroFormDataType } from "./landingHero.types";
 
-
 const LandingHero = () => {
-  const [provinceList, setProvinceList] = useState<{ id: number; title: string }[]>(
-    []
-  );
+  const [provinceList, setProvinceList] = useState<
+    { id: number; title: string }[]
+  >([]);
 
   const [citiesList, setCitiesList] = useState<{ id: number; title: string }[]>(
     []
@@ -28,14 +31,14 @@ const LandingHero = () => {
     { id: number; title: string }[]
   >([]);
 
-  const [selectedDate, setSelectedDate] = useState("")
+  const [selectedDate, setSelectedDate] = useState("");
 
-  const router = useRouter()
+  const router = useRouter();
 
   const [form] = Form.useForm<HeroFormDataType>();
 
-  const { mutate: getProvinceList, isPending: isProvinceListLoading } =
-    useProvinceList({ onSuccess: provinceListOnSuccess });
+  // const { mutate: getProvinceList, isPending: isProvinceListLoading } =
+  //   useProvinceList({ onSuccess: provinceListOnSuccess });
 
   const { mutate: getCitiesList, isPending: isCitiesListLoading } =
     useCitiesList({ onSuccess: citiesListOnSuccess });
@@ -45,7 +48,10 @@ const LandingHero = () => {
 
   function provinceListOnSuccess(res: ProvinceListResult) {
     setProvinceList(
-      res.provinces?.map((item) => ({ id: +item.province_id, title: item.province }))
+      res.provinces?.map((item) => ({
+        id: +item.province_id,
+        title: item.province,
+      }))
     );
   }
 
@@ -62,15 +68,14 @@ const LandingHero = () => {
   }
 
   useEffect(() => {
-    getProvinceList({})
-
+    // getProvinceList({})
   }, []);
 
   const changeProvinceHandler = (provinceId: number) => {
     getCitiesList({
-      province_id: provinceId
+      province_id: provinceId,
     });
-  }
+  };
 
   const genderChangeHandler = (genderId: string) => {
     getServiceList({ gender: genderId });
@@ -82,7 +87,7 @@ const LandingHero = () => {
 
   const searchBtnHandler = () => {
     const params = new URLSearchParams();
-    const { city, serviceType, gender, province } = form.getFieldsValue()
+    const { city, serviceType, gender, province } = form.getFieldsValue();
 
     if (province) {
       params.append("province", province.title);
@@ -106,7 +111,7 @@ const LandingHero = () => {
     }
 
     router.push(`/search?${params.toString()}`);
-  }
+  };
 
   return (
     <div className="md:max-w-[80%] mx-auto mt-12 md:mt-28 flex flex-col gap-8 items-center w-full">
@@ -126,7 +131,7 @@ const LandingHero = () => {
               prefix={<BiSolidCity />}
               form={form}
               onChange={(id) => changeProvinceHandler(id as number)}
-              loading={isProvinceListLoading}
+              // loading={isProvinceListLoading}
             />
           </Col>
           <Col xs={24} md={12}>
@@ -160,10 +165,22 @@ const LandingHero = () => {
             />
           </Col>
           <Col xs={24} md={12}>
-            <CustomDatePicker name="date" placeholder="انتخاب تاریخ" form={form} onChange={(_, localeDate) => setSelectedDate(localeDate as string)} />
+            <CustomDatePicker
+              name="date"
+              placeholder="انتخاب تاریخ"
+              form={form}
+              onChange={(_, localeDate) =>
+                setSelectedDate(localeDate as string)
+              }
+            />
           </Col>
           <Col span={24}>
-            <CustomButton type="primary" icon={<CiSearch />} className="w-full" onClick={searchBtnHandler}>
+            <CustomButton
+              type="primary"
+              icon={<CiSearch />}
+              className="w-full"
+              onClick={searchBtnHandler}
+            >
               جستجو
             </CustomButton>
           </Col>

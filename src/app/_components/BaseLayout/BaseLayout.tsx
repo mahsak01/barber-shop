@@ -5,8 +5,6 @@ import { AntdRegistry } from "@ant-design/nextjs-registry";
 import AntdConfigProviderWrapper from "@/lib/antd-provider";
 import QueryProvider from "@/providers/react-query-provider";
 import { vazirmatn } from "@/utils/fonts/fontUtils";
-import Header from "../Header/Header";
-import Footer from "../Footer/Footer";
 
 type BaseLayoutProps = {
   children: React.ReactNode;
@@ -29,9 +27,7 @@ export default async function BaseLayout({ children }: BaseLayoutProps) {
             <AntdRegistry>
               <AntdConfigProviderWrapper>
                 <App notification={{ placement: "bottomLeft", stack: true }}>
-                  <Header />
-                  <main>{children}</main>
-                  <Footer />
+                  <>{children}</>
                 </App>
               </AntdConfigProviderWrapper>
             </AntdRegistry>

@@ -1,7 +1,10 @@
 .custom-input-root .ant-form-item-no-colon {
   color: var(--text-400) !important;
 }
-.custom-input-root .ant-form-item-has-error .ant-form-item-control-input-content input {
+.custom-input-root
+  .ant-form-item-has-error
+  .ant-form-item-control-input-content
+  input {
   @apply !bg-error-500-10;
 }
 .custom-input-root
@@ -10,6 +13,9 @@
   input::-webkit-input-placeholder {
   /* WebKit, Blink, Edge */
   @apply text-text-placeholder;
+}
+.custom-input-root .ant-form-item {
+  margin-bottom: 0;
 }
 .custom-input-root.ant-form-item-has-error
   .ant-form-item-control-input-content
