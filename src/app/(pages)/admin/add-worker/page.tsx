@@ -3,6 +3,7 @@ import { Tabs, TabsProps } from "antd";
 import AddWorkerProfile from "@/app/_components/pages/admin/addWorker/Profile/AddWorkerProfile";
 import AddWorkerCommissions from "@/app/_components/pages/admin/addWorker/Commissions/AddWorkerCommissions";
 import AddWorkerAddresses from "@/app/_components/pages/admin/addWorker/Addresses/AddWorkerAddresses";
+import AddWorkerEmergencyContacts from "@/app/_components/pages/admin/addWorker/EmergencyContacts/AddWorkerEmergencyContacts";
 
 const AddWorker = () => {
   const items: TabsProps["items"] = [
@@ -19,7 +20,7 @@ const AddWorker = () => {
     {
       key: "4",
       label: "تماس اضطراری",
-      children: "Content of Tab Pane 3",
+      children: <AddWorkerEmergencyContacts />,
     },
     {
       key: "5",

@@ -2,8 +2,8 @@ import { ReactNode, useEffect, useState } from "react";
 import { FormInstance, Calendar, GetProps } from "antd";
 import dayjs, { Dayjs } from "dayjs";
 import moment from "jalali-moment";
-import "./_customCalendar.css";
 import { JalaliLocaleListenerFix } from "@/utils/DatePickerFix/utils/jalali";
+import "./_customCalendar.css";
 
 type CustomCalendarProps = {
   label?: string;

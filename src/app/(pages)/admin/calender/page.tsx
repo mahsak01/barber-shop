@@ -3,152 +3,153 @@ import CustomCalendar from "@/app/_components/core/antdComponents/CustomCalendar
 import { useEffect, useState } from "react";
 import { CalendarProps } from "antd";
 import moment from "moment";
-import momentj from "jalali-moment";
-import dayjs, { Dayjs } from "dayjs";
+import { Dayjs } from "dayjs";
+import { useWorkersSchedule } from "../workers/_api/workersList";
+import {
+  WorkersScheduleDataType,
+  WorkersScheduleDataTypeWhitFLName,
+  WorkersScheduleRecordsType,
+  WorkersScheduleResult,
+} from "../workers/_api/workersList.types";
+import CalenderCellDrawers from "@/app/_components/pages/admin/calender/drawers/CalenderCell/CalenderCellDrawers";
 
-// Utility function to map the backend data to the calendar cell data
-const mapCalendarData = (calendarData: CalendarAbsence) => {
-  const mappedData: Record<string, CalendarPresenceAbsenceResponseData> = {};
-  calendarData.forEach((item) => {
-    const formattedDate = dayjs(item?.date).format("YYYY-MM-DD");
-    // mappedData[formattedDate] = item?.AssociationPresenceAbsence_title;
-    mappedData[formattedDate] = item;
-  });
-  return mappedData;
-};
+const workerColors: Record<string, string> = {};
 
-// Utility to get the list of events for a specific day
-const getListDataFromApi = (
-  value: Dayjs,
-  mappedData: Record<string, CalendarPresenceAbsenceResponseData>
-) => {
-  const formattedDate = value.format("YYYY-MM-DD");
-  return mappedData[formattedDate] || [];
-};
+function getWorkerColor(name: string) {
+  if (!workerColors[name]) {
+    workerColors[name] =
+      `#${Math.floor(Math.random() * 16777215).toString(16)}`;
+  }
+  return workerColors[name];
+}
 
 const Calender = () => {
-  const [mappedData, setMappedData] = useState<
-    Record<string, CalendarPresenceAbsenceResponseData>
-  >({});
+  const [mappedData, setMappedData] = useState<WorkersScheduleRecordsType[]>(
+    []
+  );
+
   const [drawerOpen, setIsDrawerOpen] = useState<{
     isOpen: boolean;
-    id: number;
-    date: string;
+    data: null | {};
   }>({
     isOpen: false,
-    id: -1,
-    date: "",
+    data: null,
   });
 
-  //   const {
-  //     params: { id },
-  //   } = useQueryParams();
+  const { mutate: getWorkersSchedule, isPending: isGetWorkersScheduleLoading } =
+    useWorkersSchedule({
+      onSuccess: WorkersScheduleOnSuccess,
+    });
 
-  //? ================================  Api Calls ================================
-  //   const [getAllCalendarInfo, { isFetching: isGetAllCalendarInfoLoading }] =
-  //     useLazyGetCalendarPresenceAbsenceQuery();
+  useEffect(() => {
+    getWorkersSchedule({
+      owner_user_id: 7,
+      salon_id: 1001,
+      start_date: "1404.07.25",
+      end_date: "1404.07.30",
+    });
+  }, []);
 
-  //? ================================ Effects ================================
-  //   useEffect(() => {
-  //     getCalendarInitData();
-  //   }, []);
+  function WorkersScheduleOnSuccess(res: WorkersScheduleResult) {
+    setMappedData(res?.data);
+    const tempDateList = res?.data?.[0]?.schedule?.map((item) => ({
+      weekday: item.weekday,
+      month: item.month,
+      day: item.day,
+    }));
 
-  //* ================================ Util Functions ================================
-  const getCalendarInitData = (date?: string) => {
-    const targetDate = date
-      ? momentj.from(date, "fa", "YYYY-MM-DD").format("YYYY-MM-DD")
-      : moment().format("YYYY-MM-DD");
+    // setDatesList(tempDateList);
+  }
 
-    onCalendarChanges(targetDate);
+  const closeDrawerHandler = () => {
+    setIsDrawerOpen({ isOpen: false, data: null });
   };
 
   // success
-  const onCalendarChanges = (date: moment.MomentInput) => {
-    // if (id && date) {
-    //   getAllCalendarInfo({
-    //     id: +id,
-    //     date: [
-    //       moment(date).subtract(41, "days").format("YYYY-MM-DD"),
-    //       moment(date).add(41, "days").format("YYYY-MM-DD"),
-    //     ],
-    //   })
-    //     .unwrap()
-    //     .then(getAllCalendarInfoIsSuccess);
-    // }
-  };
-  //   const getAllCalendarInfoIsSuccess = (
-  //     value: GetCalendarPresenceAbsenceResponse
-  //   ) => {
-  //     if (value?.status === 200) {
-  //       const mapped = mapCalendarData(value?.data);
-  //       setMappedData(mapped);
-  //     }
-  //   };
+  const onCalendarChanges = (date: moment.MomentInput) => {};
 
   // dateCellRender
   const dateCellRender = (value: Dayjs) => {
-    const data = getListDataFromApi(value, mappedData);
+    const currentDate = value.format("YYYY.MM.DD");
 
-    const { AssociationPresenceAbsence_title, id } = data;
+    const transformData = mappedData?.map((item) => {
+      return {
+        ...item,
+        schedule: item?.schedule?.map((s) => ({
+          ...s,
+          fname: item.fname,
+          lname: item.lname,
+        })),
+      };
+    });
 
-    const onCellClick = () => {
-      setIsDrawerOpen({ isOpen: true, id, date: value.format("YYYY-MM-DD") });
+    const tempDates = transformData?.map((item) => item.schedule);
+
+    const daySchedules = tempDates?.flat().filter((item) => {
+      return item?.date_j === currentDate;
+    });
+
+    if (daySchedules.length === 0) return null;
+
+    const onCellClick = (schedule: WorkersScheduleDataTypeWhitFLName[]) => {
+      setIsDrawerOpen({
+        isOpen: true,
+        data: schedule,
+      });
     };
 
-    if (AssociationPresenceAbsence_title === "مرخصي") {
-      return (
-        <div className="habitants-Leave-wrapper" onClick={onCellClick}>
-          <span className="Leave">مرخصی</span>
-          {/* <CustomSingleBadge status="warning" text="" /> */}
-        </div>
-      );
-    }
-    if (AssociationPresenceAbsence_title === "حاضر") {
-      return (
-        <div className="habitants-presence-wrapper" onClick={onCellClick}>
-          <span className="presence">حاضر</span>
-          {/* <CustomSingleBadge status="success" text="" /> */}
-        </div>
-      );
-    }
-    if (AssociationPresenceAbsence_title === "غايب") {
-      return (
-        <div className="habitants-absence-wrapper" onClick={onCellClick}>
-          <span className="absence">غايب</span>
-          {/* <CustomSingleBadge status="error" text="" /> */}
-        </div>
-      );
-    }
-    if (AssociationPresenceAbsence_title === "ثبت نشده") {
-      return (
-        <div
-          className="habitants-not-register-wrapper"
-          onClick={onCellClick}
-        ></div>
-      );
-    }
+    return (
+      <ul
+        className="list-none flex flex-col gap-1"
+        onClick={() => onCellClick(daySchedules)}
+      >
+        {daySchedules.map((schedule, idx) => {
+          const color = getWorkerColor(`${schedule.fname} ${schedule.lname}`);
+          return (
+            <li key={idx}>
+              <div className="flex flex-col gap-1">
+                {schedule.shifts.map((shift, i) => {
+                  return (
+                    <div
+                      className={`bg-info-200 rounded-md py-1 text-center `}
+                      style={{ backgroundColor: color }}
+                      key={i}
+                    >
+                      {shift.start.slice(0, 5)} - {shift.end.slice(0, 5)}
+                    </div>
+                  );
+                })}
+              </div>
+            </li>
+          );
+        })}
+      </ul>
+    );
   };
 
   // cellRenderer
   const cellRenderer: CalendarProps<Dayjs>["cellRender"] = (current, info) => {
     if (info.type === "date") return dateCellRender(current);
-    // Todo[saman]: month cells are not needed on project yet!
-    // if (info.type === "month") return monthCellRender(current);
+
     return info.originNode;
   };
 
-  // drawer handler
-
   return (
-    <div className="p-8">
-      <CustomCalendar
-        name="calendar"
-        mode="month"
-        isYearSelectorDisabled={true}
-        //   isLoading={isGetAllCalendarInfoLoading}
-        cellRender={cellRenderer}
+    <>
+      <div className="p-8">
+        <CustomCalendar
+          name="calendar"
+          mode="month"
+          isYearSelectorDisabled={true}
+          //   isLoading={isGetAllCalendarInfoLoading}
+          cellRender={cellRenderer}
+        />
+      </div>
+      <CalenderCellDrawers
+        closeDrawerHandler={closeDrawerHandler}
+        drawerOpen={drawerOpen}
       />
-    </div>
+    </>
   );
 };
 

@@ -409,3 +409,12 @@
   scrollbar-width: none;
   /* Firefox */
 }
+/* .vertical-label {
+  .ant-row {
+    flex-direction: column;
+    align-items: start;
+  }
+  .ant-select-selector {
+    width: 100% !important;
+  }
+} */
