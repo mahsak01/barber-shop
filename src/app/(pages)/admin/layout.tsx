@@ -30,10 +30,10 @@ const data = [
 
 const menu = [
   { icon: BiHome, route: "/admin" },
-  { icon: BiCalendar, route: "" },
-  { icon: BiShoppingBag, route: "" },
-  { icon: BiSmile, route: "" },
-  { icon: BiBookOpen, route: "" },
+  { icon: BiCalendar, route: "/admin/calender" },
+  { icon: BiShoppingBag, route: "/admin/sales" },
+  { icon: BiSmile, route: "/admin/clients" },
+  { icon: BiBookOpen, route: "/admin/catalog" },
   { icon: PiUserListThin, route: "" },
   { icon: PiUsersThree, route: "/admin/workers" },
   { icon: FaChartLine, route: "" },

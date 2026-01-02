@@ -1,67 +1,42 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Table, Button, DatePicker } from "antd";
+import { usePaiedTransactions } from "@/app/(pages)/admin/sales/_api/sales";
+import {
+  PaiedTransactionsRecordType,
+  PaiedTransactionsResult,
+} from "@/app/(pages)/admin/sales/_api/sales.types";
+import { PaymentTransactionsTableModel } from "./helper/models/PaymentTransactions/PaymentTransactionsTableModel";
+
+//   time: "02:50";
+//   month_name: "مهر";
+//   customer_phone: "09135280252";
+//   customer_name: "عاطفه بخشی";
+//   salon_name: "ماه بانو";
 
 const PaymentTransactions = () => {
-  const columns = [
-    {
-      title: "تاریخ پرداخت", // Payment Date
-      dataIndex: "paymentDate",
-      key: "paymentDate",
-    },
-    {
-      title: "شماره مرجع", // Ref #
-      dataIndex: "refNumber",
-      key: "refNumber",
-    },
-    {
-      title: "مشتری", // Client
-      dataIndex: "client",
-      key: "client",
-    },
-    {
-      title: "عضو تیم", // Team member
-      dataIndex: "teamMember",
-      key: "teamMember",
-    },
-    {
-      title: "نوع", // Type
-      dataIndex: "type",
-      key: "type",
-    },
-    {
-      title: "روش پرداخت", // Method
-      dataIndex: "method",
-      key: "method",
-    },
-    {
-      title: "مقدار", // Amount
-      dataIndex: "amount",
-      key: "amount",
-    },
-  ];
+  const [paiedTransactionsList, setPaiedTransactionsList] = useState<
+    PaiedTransactionsRecordType[]
+  >([]);
 
-  const data = [
-    {
-      key: "1",
-      paymentDate: "17 اکتبر 2025, 09:32",
-      refNumber: "1",
-      client: "حضوری",
-      teamMember: "عاطفه بخشی",
-      type: "فروش",
-      method: "نقدی",
-      amount: "IRR 150",
-    },
-    {
-      key: "12",
-      paymentDate: "17 اکتبر 2025, 09:32",
-      refNumber: "1",
-      client: "آنلاین",
-      teamMember: "عاطفه بخشی",
-      type: "فروش",
-      method: "انلاین",
-      amount: "IRR 150",
-    },
-  ];
+  const {
+    mutate: getPaiedTransactionsList,
+    isPending: isGetPaiedTransactionsListLoading,
+  } = usePaiedTransactions({
+    onSuccess: PaiedTransactionsListOnSuccess,
+  });
+
+  function PaiedTransactionsListOnSuccess(res: PaiedTransactionsResult) {
+    console.log(res);
+    setPaiedTransactionsList(res?.transactions);
+  }
+
+  useEffect(() => {
+    getPaiedTransactionsList({
+      salon_id: 1002,
+      start_date: "1404.07.01",
+      end_date: "1404.07.30",
+    });
+  }, []);
 
   return (
     <div className="p-4">
@@ -76,7 +51,11 @@ const PaymentTransactions = () => {
         <DatePicker.RangePicker className="mr-2" />
       </div>
 
-      <Table columns={columns} dataSource={data} pagination={false} />
+      <Table
+        columns={PaymentTransactionsTableModel}
+        dataSource={paiedTransactionsList}
+        pagination={false}
+      />
     </div>
   );
 };

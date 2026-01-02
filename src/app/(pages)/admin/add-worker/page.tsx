@@ -4,6 +4,7 @@ import AddWorkerProfile from "@/app/_components/pages/admin/addWorker/Profile/Ad
 import AddWorkerCommissions from "@/app/_components/pages/admin/addWorker/Commissions/AddWorkerCommissions";
 import AddWorkerAddresses from "@/app/_components/pages/admin/addWorker/Addresses/AddWorkerAddresses";
 import AddWorkerEmergencyContacts from "@/app/_components/pages/admin/addWorker/EmergencyContacts/AddWorkerEmergencyContacts";
+import AddWorkerServices from "@/app/_components/pages/admin/addWorker/Services/AddWorkerServices";
 
 const AddWorker = () => {
   const items: TabsProps["items"] = [
@@ -25,7 +26,7 @@ const AddWorker = () => {
     {
       key: "5",
       label: "سرویس ها",
-      children: "Content of Tab Pane 3",
+      children: <AddWorkerServices />,
     },
     {
       key: "6",

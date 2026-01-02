@@ -37,8 +37,8 @@ const LandingHero = () => {
 
   const [form] = Form.useForm<HeroFormDataType>();
 
-  // const { mutate: getProvinceList, isPending: isProvinceListLoading } =
-  //   useProvinceList({ onSuccess: provinceListOnSuccess });
+  const { mutate: getProvinceList, isPending: isProvinceListLoading } =
+    useProvinceList({ onSuccess: provinceListOnSuccess });
 
   const { mutate: getCitiesList, isPending: isCitiesListLoading } =
     useCitiesList({ onSuccess: citiesListOnSuccess });
@@ -68,7 +68,7 @@ const LandingHero = () => {
   }
 
   useEffect(() => {
-    // getProvinceList({})
+    getProvinceList({});
   }, []);
 
   const changeProvinceHandler = (provinceId: number) => {

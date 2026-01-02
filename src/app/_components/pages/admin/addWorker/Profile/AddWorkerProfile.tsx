@@ -1,14 +1,20 @@
 "use client";
-import { Form, Upload, Button, Divider } from "antd";
+import { Form, Upload, Button, Divider, UploadFile } from "antd";
 import { UploadOutlined, UserOutlined } from "@ant-design/icons";
 import CustomInput from "@/app/_components/core/antdComponents/CustomInput/CustomInput";
 import CustomDatePicker from "@/app/_components/core/antdComponents/CustomDatePicker/CustomDatePicker";
 import CustomSelect from "@/app/_components/core/antdComponents/CustomSelect/CustomSelect";
-import { useCreateNewWorker } from "@/app/(pages)/admin/add-worker/_api/addWorker";
-import { CreateNewWorkerResult } from "@/app/(pages)/admin/add-worker/_api/addWorker.types";
+import {
+  useCreateNewWorker,
+  useGetWorkerInfo,
+} from "@/app/(pages)/admin/add-worker/_api/addWorker";
+import {
+  CreateNewWorkerResult,
+  GetWorkerInfoResult,
+} from "@/app/(pages)/admin/add-worker/_api/addWorker.types";
 import { REQUIRED_RULES } from "@/utils/formRules/formRulesUtils";
 import CustomButton from "@/app/_components/core/antdComponents/CustomButton/CustomButton";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AddWorkerProfileFormType } from "./_addWorkerProfile.types";
 
 const colorArray = [
@@ -32,50 +38,65 @@ const AddWorkerProfile = () => {
     end: "",
     birth: "",
   });
+  const [file, setFile] = useState<File | null>(null);
 
   const { mutate: createNewWorker, isPending: isCreateNewWorkerLoading } =
     useCreateNewWorker({
       onSuccess: createNewQorkerOnSuccess,
     });
 
+  const { mutate: getWorker, isPending: isGetWorkerLoading } = useGetWorkerInfo(
+    {
+      onSuccess: getworkerOnSuccess,
+    }
+  );
+
   function createNewQorkerOnSuccess(res: CreateNewWorkerResult) {}
+
+  function getworkerOnSuccess(res: GetWorkerInfoResult) {}
+
+  const handleUploadChange = (info: any) => {
+    const realFile = info.file;
+
+    if (realFile instanceof File) {
+      setFile(realFile);
+    } else {
+      console.error("originFileObj IS NOT a real File:", realFile);
+    }
+  };
 
   const createNewWorkerHandler = () => {
     form.validateFields().then((value) => {
-      // createNewWorker({
-      //   avatar: 0,
-      //   birthday: selectDate.birth,
-      //   color: selectColor,
-      //   email: value?.email,
-      //   employment_type: 0,
-      //   end_work: selectDate.end,
-      //   start_work: selectDate.start,
-      //   first_name: value?.firstname,
-      //   last_name: value?.lastname,
-      //   job_title: value?.jobTitle,
-      //   note: value?.description,
-      //   phone_number: value?.phoneOne,
-      //   owner_user_id: 8,
-      //   salon_id: 1002,
-      // });
-      createNewWorker({
-        avatar: "0",
-        birthday: "1370.12.15",
-        color: "",
-        email: "",
-        employment_type: 1,
-        end_work: "1405.12.15",
-        start_work: "1404.12.15",
-        first_name: "",
-        last_name: "",
-        job_title: "",
-        note: "",
-        phone_number: "",
-        owner_user_id: 8,
-        salon_id: 1002,
-      });
+      const formdata = new FormData();
+      formdata.append("owner_user_id", "8");
+      formdata.append("salon_id", "1002");
+      formdata.append("first_name", value?.firstname);
+      formdata.append("last_name", value?.lastname);
+      formdata.append("phone_number", value?.phoneOne);
+      formdata.append("email", value?.email);
+      formdata.append("birthday", selectDate.birth?.split("-")?.join("."));
+      formdata.append("color", selectColor);
+      formdata.append("job_title", value?.jobTitle);
+      formdata.append("employment_type", "1");
+      formdata.append("start_work", selectDate.start?.split("-")?.join("."));
+      formdata.append("end_work", selectDate.end?.split("-")?.join("."));
+      formdata.append("note", value?.description);
+      if (file) {
+        formdata.append("avatar", file, file.name);
+      }
+
+      createNewWorker(formdata);
     });
   };
+
+  useEffect(() => {
+    getWorker({
+      type: 0,
+      worker: "09124520178",
+      salon_id: "1002",
+      worker_id: "25",
+    });
+  }, []);
 
   return (
     <div className="p-8 w-full">
@@ -96,13 +117,16 @@ const AddWorkerProfile = () => {
           <div className="w-28 h-28 rounded-full bg-indigo-50 flex items-center justify-center">
             <UserOutlined className="text-4xl text-indigo-500" />
           </div>
-          <Upload showUploadList={false} className="absolute bottom-1 right-1">
-            <Button
-              shape="circle"
-              icon={<UploadOutlined />}
-              size="small"
-              className="shadow"
-            />
+          <Upload
+            maxCount={1}
+            listType="picture"
+            name="avatar"
+            onChange={handleUploadChange}
+            beforeUpload={() => false}
+          >
+            <Button type="primary" icon={<UploadOutlined />}>
+              Upload
+            </Button>
           </Upload>
         </div>
       </div>

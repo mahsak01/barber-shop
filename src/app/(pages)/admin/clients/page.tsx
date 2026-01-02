@@ -1,76 +1,79 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { Table, Button, Input, Select } from "antd";
 import CustomInput from "@/app/_components/core/antdComponents/CustomInput/CustomInput";
+import { useClientsList } from "./_api/clients";
+import { ClientRecordType, ClientsListResult } from "./_api/clients.types";
+import "./_clients.css";
+
+//  "customer_id": 4,
+//  "created_month_name": "مهر",
+
+const ClientsTableModel = [
+  {
+    title: "نام مشتری", // Client name
+    dataIndex: "customer_name",
+    key: "customer_name",
+    width: 150,
+  },
+  {
+    title: "شماره موبایل", // Mobile number
+    dataIndex: "customer_phone",
+    key: "customer_phone",
+    width: 150,
+  },
+  {
+    title: "نظرات", // Reviews
+    dataIndex: "comments",
+    key: "comments",
+    width: 150,
+  },
+  {
+    title: "فروش‌ها", // Sales
+    dataIndex: "total_purchase",
+    key: "total_purchase",
+    width: 150,
+  },
+  {
+    title: "تاریخ ایجاد", // Created at
+    dataIndex: "created_date",
+    key: "created_date",
+    width: 150,
+  },
+];
 
 const Clients = () => {
-  const columns = [
-    {
-      title: "نام مشتری", // Client name
-      dataIndex: "clientName",
-      key: "clientName",
-    },
-    {
-      title: "شماره موبایل", // Mobile number
-      dataIndex: "mobileNumber",
-      key: "mobileNumber",
-    },
-    {
-      title: "نظرات", // Reviews
-      dataIndex: "reviews",
-      key: "reviews",
-    },
-    {
-      title: "فروش‌ها", // Sales
-      dataIndex: "sales",
-      key: "sales",
-    },
-    {
-      title: "تاریخ ایجاد", // Created at
-      dataIndex: "createdAt",
-      key: "createdAt",
-    },
-  ];
+  const [clientList, setClientList] = useState<ClientRecordType[]>([]);
 
-  const data = [
-    {
-      key: "1",
-      clientName: "عاطفه بخشی", // Atefeh Bakhshi
-      mobileNumber: "-",
-      reviews: "-",
-      sales: "IRR 0",
-      createdAt: "17 اکتبر 2025",
-    },
-    {
-      key: "2",
-      clientName: "Jack Doe",
-      mobileNumber: "-",
-      reviews: "-",
-      sales: "IRR 0",
-      createdAt: "2 اکتبر 2025",
-    },
-    {
-      key: "3",
-      clientName: "Jane Doe",
-      mobileNumber: "-",
-      reviews: "-",
-      sales: "IRR 0",
-      createdAt: "2 اکتبر 2025",
-    },
-    {
-      key: "4",
-      clientName: "John Doe",
-      mobileNumber: "-",
-      reviews: "-",
-      sales: "IRR 0",
-      createdAt: "2 اکتبر 2025",
-    },
-  ];
+  const router = useRouter();
+
+  const { mutate: getClientList, isPending: isGetClientListLoading } =
+    useClientsList({
+      onSuccess: ClientListOnSuccess,
+    });
+
+  function ClientListOnSuccess(res: ClientsListResult) {
+    setClientList(res?.customers);
+  }
+
+  useEffect(() => {
+    getClientList({
+      salon_id: 1002,
+    });
+  }, []);
 
   return (
     <div className="p-4">
       <div className="flex justify-between mb-4">
         <h1 className="text-xl font-semibold">لیست مشتریان</h1>
-        <Button type="primary" className="bg-blue-500 text-white">
+        <Button
+          type="primary"
+          onClick={() => {
+            router.push("/admin/add-client");
+          }}
+          className="bg-blue-500 text-white"
+        >
           افزودن
         </Button>
       </div>
@@ -88,7 +91,12 @@ const Clients = () => {
         </Select>
       </div>
 
-      <Table columns={columns} dataSource={data} pagination={false} />
+      <Table
+        columns={ClientsTableModel}
+        dataSource={clientList}
+        pagination={false}
+        scroll={{ x: "max-content" }}
+      />
     </div>
   );
 };

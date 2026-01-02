@@ -4,6 +4,9 @@ import {
   CreateNewWorkerOptions,
   CreateNewWorkerRequestModel,
   CreateNewWorkerResult,
+  GetWorkerInfoOptions,
+  GetWorkerInfoRequestModel,
+  GetWorkerInfoResult,
 } from "./addWorker.types";
 
 // create new worker
@@ -12,7 +15,9 @@ const createNewWorker = (
 ): Promise<CreateNewWorkerResult> =>
   postRequest<CreateNewWorkerRequestModel, CreateNewWorkerResult>(
     "/api/salon_moderate/add_team_member.php",
-    model
+    model,
+    false,
+    { "Content-Type": "multipart/form-data" } as any
   );
 
 export const useCreateNewWorker = ({
@@ -21,6 +26,32 @@ export const useCreateNewWorker = ({
 }: CreateNewWorkerOptions) => {
   const { mutate, isPending, data } = useMutation({
     mutationFn: (model: CreateNewWorkerRequestModel) => createNewWorker(model),
+    onSuccess: onSuccess,
+    onError: onError,
+  });
+
+  return {
+    mutate,
+    isPending,
+    data,
+  };
+};
+
+// get worker info
+const getWorkerInfo = (
+  model: GetWorkerInfoRequestModel
+): Promise<GetWorkerInfoResult> =>
+  postRequest<GetWorkerInfoRequestModel, GetWorkerInfoResult>(
+    "/api/salon_moderate/get_worker_inf.php",
+    model
+  );
+
+export const useGetWorkerInfo = ({
+  onSuccess,
+  onError,
+}: GetWorkerInfoOptions) => {
+  const { mutate, isPending, data } = useMutation({
+    mutationFn: (model: GetWorkerInfoRequestModel) => getWorkerInfo(model),
     onSuccess: onSuccess,
     onError: onError,
   });

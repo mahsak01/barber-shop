@@ -54,7 +54,7 @@ const SelectTime = () => {
 
   useEffect(() => {
     getSideDates({
-      date: "1404.07.03",
+      date: "1404.08.10",
       fd_type: "1",
       after: "10",
       before: "6",

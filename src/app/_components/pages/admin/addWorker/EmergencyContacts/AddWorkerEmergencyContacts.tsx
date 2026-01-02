@@ -1,7 +1,7 @@
 import CustomButton from "@/app/_components/core/antdComponents/CustomButton/CustomButton";
 import CustomInput from "@/app/_components/core/antdComponents/CustomInput/CustomInput";
 import CustomSelect from "@/app/_components/core/antdComponents/CustomSelect/CustomSelect";
-import { Col, Form, Modal, Row } from "antd";
+import { Form, Modal } from "antd";
 import React, { useState } from "react";
 import { BiLocationPlus } from "react-icons/bi";
 import { CiEdit } from "react-icons/ci";

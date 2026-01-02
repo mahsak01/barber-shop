@@ -4,7 +4,7 @@ import PaymentTransactions from "@/app/_components/pages/admin/sales/PaymentTran
 import SalesTab from "@/app/_components/pages/admin/sales/Sales/SalesTab";
 import SalesDailyReport from "@/app/_components/pages/admin/sales/SalesDailyReport/SalesDailyReport";
 import { Tabs, TabsProps } from "antd";
-import React from "react";
+import "./_sales.css";
 
 const Sales = () => {
   const items: TabsProps["items"] = [

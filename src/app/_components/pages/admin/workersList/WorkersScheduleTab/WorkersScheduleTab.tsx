@@ -31,8 +31,8 @@ const WorkersScheduleTab = () => {
     getWorkersSchedule({
       owner_user_id: 7,
       salon_id: 1001,
-      start_date: "1404.07.25",
-      end_date: "1404.07.30",
+      start_date: "1404.09.08",
+      end_date: "1404.09.30",
     });
   }, []);
 
