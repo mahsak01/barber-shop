@@ -17,6 +17,7 @@ import {
 import { GENDER_TYPE_LIST } from "../../_shared/utils";
 import { useRouter } from "next/navigation";
 import { HeroFormDataType } from "./landingHero.types";
+import {BubbleBackground} from "@/app/_components/pages/home/Hero/bubble";
 
 const LandingHero = () => {
   const [provinceList, setProvinceList] = useState<
@@ -114,7 +115,16 @@ const LandingHero = () => {
   };
 
   return (
-    <div className="md:max-w-[80%] mx-auto mt-12 md:mt-28 flex flex-col gap-8 items-center w-full">
+      <section className="relative mt-12 md:mt-24 w-full">
+        <div className="fixed inset-0 -z-10" >
+          <BubbleBackground
+              interactive={false}
+              className="h-full w-full rounded-3xl bg-gradient-to-br from-pink-500 via-fuchsia-600 to-purple-700"
+          />
+        </div>
+
+        <div className="md:max-w-[80%] mx-auto mt-12 md:mt-28 flex flex-col gap-8 items-center w-full">
+
       <h1 className="text-2xl md:text-4xl font-bold text-center">
         خدمات زیبایی و سلامتی محلی را رزرو کنید
       </h1>
@@ -187,6 +197,7 @@ const LandingHero = () => {
         </Row>
       </Form>
     </div>
+      </section>
   );
 };
 
