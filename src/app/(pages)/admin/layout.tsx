@@ -49,7 +49,7 @@ export default function AdminPanelLayout({ children }: { children: ReactNode }) 
     <div className="flex flex-col h-screen">
       {/* Header - Full Width */}
       <ScrollableHeader>
-        <header className="flex items-center justify-between px-6 py-3.5  border-gray-200 dark:border-gray-700 shadow-sm">
+        <header className="flex items-center justify-between px-6 py-3  shadow-sm">
           {/* Logo */}
           <Image src="/images/logo.png" width={108} height={48} alt="logo" />
 
@@ -88,7 +88,7 @@ export default function AdminPanelLayout({ children }: { children: ReactNode }) 
                   router.push(item.route);
                 }}
                 className={`p-2 rounded-lg ${
-                  active === i ? "bg-neutral-600" : "hover:bg-neutral-700"
+                  active === i ? "bg-secondary" : "hover:bg-neutral-950"
                 }`}
               >
                 <Icon className="w-6 h-6" />
