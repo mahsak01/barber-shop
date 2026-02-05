@@ -8,6 +8,25 @@
 /* UTILITIES */
 @import "tailwindcss/utilities";
 
+@layer components {
+  .btn-black {
+    background-color: var(--neutral-13) !important; /* مشکی */
+    border-color: var(--neutral-13) !important;
+    color: white !important;
+  }
+
+  .btn-black:hover {
+    background-color: var(--neutral-10) !important; /* طوسی خیلی تیره */
+    border-color: var(--neutral-10) !important;
+    color: white !important;
+  }
+
+  .btn-black:active {
+    background-color: var(--neutral-11) !important;
+    border-color: var(--neutral-11) !important;
+  }
+}
+
 @layer base {
   html {
     font-family: var(--vazirmatn);

@@ -1,43 +1,41 @@
-import { IoIosStar } from "react-icons/io";
 import { CommentsDataType } from "../../pages/home/Reviews/_api/reviews.types";
 import Image from "next/image";
 
 const ReviewCard = ({ data }: { data: CommentsDataType }) => {
   return (
-    <div className="max-w-xs h-full flex flex-col justify-between bg-neutral-100 shadow-md rounded-lg p-6 text-neutral-11 ">
-      <div>
-        <div className="flex mb-4">
-          {[...Array(Math.ceil(+data?.score || 3))].map((_, i) => (
-            <IoIosStar key={i} className="w-4 h-4" />
-          ))}
+<div className="max-w-xs min-h-[320px] flex flex-col justify-between bg-neutral-100 shadow-lg rounded-xl pt-6 px-6 pb-8 text-neutral-11">
+
+      {/* Stars */}
+      <div className="flex mb-4">
+        {[...Array(Math.ceil(+data?.score || 3))].map((_, i) => (
+           <span className="text-yellow-400 text-base">⭐</span>
+        ))}
+      </div>
+
+      {/* Content */}
+      <div className="flex-1">
+        <h3 className="text-lg font-semibold mb-2">{data?.title}</h3>
+        <p className="text-sm text-gray-600">{data?.comment}</p>
+      </div>
+
+      {/* User info */}
+      <div className="flex items-center justify-start mt-6">
+       
+        <Image
+          src={
+            data?.avatar === "0"
+              ? "/images/placeholder/man.png"
+              : `https://be-nobat.ir/images/users/${data?.UserID}.jpg`
+          }
+          alt="user avatar"
+          width={48}
+          height={48}
+          className="w-12 h-12 rounded-full object-cover"
+        />
+         <div className="text-right mr-4">
+          <p className="text-sm font-medium">{data?.name}</p>
         </div>
 
-        <h3 className="text-lg font-semibold mb-2">{data?.title}</h3>
-        <p className="text-sm text-gray-600 mb-4">{data?.comment}</p>
-      </div>
-      <div className="flex items-center mt-auto">
-        {data?.avatar === "0" ? (
-          <Image // Placeholder image
-            src={`/images/placeholder/man.png`}
-            alt="placeholder"
-            width={40}
-            height={40}
-            className="w-10 h-10 min-w-10 rounded-full object-cover mr-3"
-          />
-        ) : (
-          <Image
-            src={`https://be-nobat.ir/images/users/${data?.UserID}.jpg`}
-            alt="placeholder"
-            width={40}
-            height={40}
-            className="w-10 h-10 min-w-10 rounded-full object-cover mr-3"
-          />
-        )}
-        <div>
-          <p className="text-sm font-medium">{data?.name}</p>
-          {/* Todo: uncomment when api got ready */}
-          {/* <p className="text-sm text-gray-500">تهران</p> */}
-        </div>
       </div>
     </div>
   );

@@ -66,7 +66,7 @@ const Reviews = () => {
         }}
       >
         {commentsList.map((item) => (
-          <SwiperSlide key={item.name}>
+          <SwiperSlide key={item.name}  className="pb-8">
             <ReviewCard data={item} />
           </SwiperSlide>
         ))}

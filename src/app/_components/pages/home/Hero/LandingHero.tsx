@@ -128,74 +128,88 @@ const LandingHero = () => {
       <h1 className="text-2xl md:text-4xl font-bold text-center">
         خدمات زیبایی و سلامتی محلی را رزرو کنید
       </h1>
+      <div className="bg-white rounded-3xl p-2 w-full md:w-auto shadow-md">
       <Form form={form}>
-        <Row
-          gutter={[16, 16]}
-          className="w-full px-4 max-w-[500px] md:max-w-[600px]"
-        >
-          <Col xs={24} md={12}>
-            <CustomSelect
-              options={provinceList}
-              name="province"
-              placeholder="انتخاب استان"
-              prefix={<BiSolidCity />}
-              form={form}
-              onChange={(id) => changeProvinceHandler(id as number)}
-              // loading={isProvinceListLoading}
-            />
-          </Col>
-          <Col xs={24} md={12}>
-            <CustomSelect
-              options={citiesList}
-              name="city"
-              placeholder="انتخاب شهر"
-              prefix={<BiSolidCity />}
-              form={form}
-              loading={isCitiesListLoading}
-            />
-          </Col>
-          <Col xs={24} md={12}>
-            <CustomSelect
-              options={GENDER_TYPE_LIST}
-              name="gender"
-              placeholder="انتخاب جنسیت"
-              prefix={<ImManWoman />}
-              form={form}
-              onChange={(e) => genderChangeHandler(e as string)}
-            />
-          </Col>
-          <Col xs={24} md={12}>
-            <CustomSelect
-              options={servicesList}
-              name="serviceType"
-              placeholder="انتخاب نوع خدمت"
-              prefix={<MdMiscellaneousServices />}
-              form={form}
-              loading={isServiceListLoading}
-            />
-          </Col>
-          <Col xs={24} md={12}>
-            <CustomDatePicker
-              name="date"
-              placeholder="انتخاب تاریخ"
-              form={form}
-              onChange={(_, localeDate) =>
-                setSelectedDate(localeDate as string)
-              }
-            />
-          </Col>
-          <Col span={24}>
-            <CustomButton
-              type="primary"
-              icon={<CiSearch />}
-              className="w-full"
-              onClick={searchBtnHandler}
-            >
-              جستجو
-            </CustomButton>
-          </Col>
-        </Row>
-      </Form>
+      <Row gutter={16} wrap={true} className="w-full max-w-full overflow-hidden">
+  <Col xs={24} sm={12} md={4} className="p-2">
+    <CustomSelect
+      options={provinceList}
+      name="province"
+      placeholder="استان"
+      prefix={<BiSolidCity />}
+      form={form}
+      bordered={false}
+      onChange={(id) => changeProvinceHandler(id as number)}
+      style={{ width: "100%", minWidth: "120px" }}
+    />
+  </Col>
+
+  <Col xs={24} sm={12} md={4} className="p-2">
+    <CustomSelect
+      options={citiesList}
+      name="city"
+      placeholder="شهر"
+      prefix={<BiSolidCity />}
+      form={form}
+      bordered={false}
+      loading={isCitiesListLoading}
+      style={{ width: "100%", minWidth: "120px" }}
+    />
+  </Col>
+
+  <Col xs={24} sm={12} md={4} className="p-2">
+    <CustomSelect
+      options={GENDER_TYPE_LIST}
+      name="gender"
+      placeholder="جنسیت"
+      prefix={<ImManWoman />}
+      form={form}
+      bordered={false}
+      onChange={(e) => genderChangeHandler(e as string)}
+      style={{ width: "100%", minWidth: "120px" }}
+    />
+  </Col>
+
+  <Col xs={24} sm={12} md={4} className="p-2">
+    <CustomSelect
+      options={servicesList}
+      name="serviceType"
+      placeholder="نوع خدمت"
+      prefix={<MdMiscellaneousServices />}
+      form={form}
+      bordered={false}
+      loading={isServiceListLoading}
+      style={{ width: "100%", minWidth: "120px" }}
+    />
+  </Col>
+
+  <Col xs={24} sm={12} md={4} className="p-2">
+    <CustomDatePicker
+      name="date"
+      placeholder="انتخاب تاریخ"
+      form={form}
+      bordered={false}
+      onChange={(_, localeDate) => setSelectedDate(localeDate as string)}
+      style={{ width: "100%", minWidth: "120px" }}
+    />
+  </Col>
+
+  <Col xs={24} sm={12} md={3} className="p-2 flex items-stretch">
+    <CustomButton
+      type="primary"
+      icon={<CiSearch />}
+      className="btn-black px-4 rounded-2xl shadow-none"
+      style={{ width: "100%" }}
+      onClick={searchBtnHandler}
+    >
+      جستجو
+    </CustomButton>
+  </Col>
+</Row>
+
+    </Form>
+</div>
+
     </div>
       </section>
   );

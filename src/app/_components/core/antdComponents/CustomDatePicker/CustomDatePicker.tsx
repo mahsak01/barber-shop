@@ -69,6 +69,7 @@ const CustomDatePicker = forwardRef<GetRef<typeof DatePicker>, CustomDatePickerP
       hasNullInitiator = false,
       forceRerender = false,
       hasVerticalLabel = true,
+      
       ...props
     },
     ref
@@ -122,6 +123,7 @@ const CustomDatePicker = forwardRef<GetRef<typeof DatePicker>, CustomDatePickerP
           {/* <DatePicker /> */}
           <JalaliLocaleListenerFix />
           <DatePicker
+          
             id={name}
             aria-label={label === null ? "لیبل تاریخ" : label?.toString()}
             name={name}

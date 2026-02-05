@@ -1,3 +1,32 @@
 .ant-picker {
   width: 100%;
 }
+/* Remove background & border from DatePicker */
+.date-pick-container .ant-picker {
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Remove focus & hover border */
+.date-pick-container .ant-picker:hover,
+.date-pick-container .ant-picker-focused {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Remove inner input background */
+.date-pick-container .ant-picker-input > input {
+  background-color: transparent !important;
+}
+
+/* Remove suffix (calendar icon background effects) */
+.date-pick-container .ant-picker-suffix {
+  color: var(--text-placeholder);
+}
+.date-pick-container
+  .ant-picker-status-error:not(.ant-picker-disabled) {
+  border: none !important;
+  box-shadow: none !important;
+}
+

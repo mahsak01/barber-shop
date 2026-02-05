@@ -1,3 +1,7 @@
 .ant-form-item-has-error .ant-select-selector {
   @apply !bg-error-500-10;
 }
+/* Remove dropdown arrow */
+.custom-select-container .ant-select-arrow {
+  display: none !important;
+}

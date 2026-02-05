@@ -18,7 +18,7 @@ const LandingSwiper = ({ list }: { list: SalonDataType[] }) => {
         disableOnInteraction: false,
         pauseOnMouseEnter: true,
       }}
-      className="w-full max-w-[320px] xs:max-w-[320px] sm:max-w-[390px] md:max-w-[728px]  lg:max-w-[910px] xl:max-w-[1280px] 2xl:max-w-[1440px]"
+      className="w-full max-w-[350px] xs:max-w-[320px] sm:max-w-[390px] md:max-w-[728px]  lg:max-w-[910px] xl:max-w-[1280px] 2xl:max-w-[1440px]"
       breakpoints={{
         0: {
           slidesPerView: 0.85, // موبایل
@@ -39,7 +39,7 @@ const LandingSwiper = ({ list }: { list: SalonDataType[] }) => {
           slidesPerView: 5, // دسکتاپ بزرگ
         },
         1536: {
-          slidesPerView: 6, // مانیتور خیلی بزرگ
+          slidesPerView: 4, // مانیتور خیلی بزرگ
         },
       }}
     >
